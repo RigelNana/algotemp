@@ -96,7 +96,9 @@ function CategoryTree({
               onClick={closeMobile}
             >
               <Folder />
-              <span>{category.title}</span>
+              <span className="shrink-0 whitespace-nowrap">
+                {category.title}
+              </span>
               {(activeCategory || (collapsed && containsActive)) && (
                 <ActiveIndicator />
               )}
@@ -187,7 +189,11 @@ export function AppSidebar() {
   const closeMobile = () => setOpenMobile(false);
 
   return (
-    <Sidebar embedded collapsible="icon" className="border-r-0">
+    <Sidebar
+      embedded
+      collapsible="icon"
+      className="whitespace-nowrap border-r-0"
+    >
       <SidebarHeader className="shrink-0 px-3 pb-3 pt-0">
         <div className="relative h-[52px] overflow-hidden">
           <Link
@@ -253,7 +259,9 @@ export function AppSidebar() {
                         className="text-muted-foreground"
                         strokeWidth={1.7}
                       />
-                      <span>{title}</span>
+                      <span className="shrink-0 whitespace-nowrap">
+                        {title}
+                      </span>
                       {active && <ActiveIndicator />}
                     </Link>
                   </SidebarMenuButton>
