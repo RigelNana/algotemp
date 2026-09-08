@@ -174,10 +174,7 @@ export function CommandMenuProvider({
         showCloseButton={false}
         className="top-[20%] translate-y-0 gap-0 sm:max-w-[560px]"
       >
-        <motion.div
-          layoutId="command-search-surface"
-          transition={motionTimings.normal}
-        >
+        <div>
           <CommandInput
             aria-label={title}
             placeholder={
@@ -190,7 +187,7 @@ export function CommandMenuProvider({
             value={query}
             onValueChange={setQuery}
           />
-        </motion.div>
+        </div>
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={mode}

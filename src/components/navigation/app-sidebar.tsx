@@ -264,9 +264,7 @@ export function AppSidebar({ openSettings }: { openSettings: () => void }) {
         </div>
         <Tooltip>
           <TooltipTrigger asChild>
-            <motion.button
-              layoutId="command-search-surface"
-              transition={motionTimings.normal}
+            <button
               onClick={() => openCommand("search")}
               aria-label="搜索算法"
               className={cn(
@@ -284,7 +282,7 @@ export function AppSidebar({ openSettings }: { openSettings: () => void }) {
                   </kbd>
                 </>
               )}
-            </motion.button>
+            </button>
           </TooltipTrigger>
           <TooltipContent side="right" hidden={!collapsed}>
             搜索算法 <kbd>{modifierKey} K</kbd>
