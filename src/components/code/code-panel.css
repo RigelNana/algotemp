@@ -1,0 +1,118 @@
+.code-workbench [aria-pressed="true"][data-slot="button"] {
+  background: var(--accent);
+  color: var(--primary);
+}
+
+/* Radix's intrinsic table wrapper otherwise prevents long lines from wrapping. */
+.code-scroll [data-slot="scroll-area-viewport"] > div {
+  display: block !important;
+  min-width: 100%;
+}
+
+.code-scroll[data-wrap="true"] [data-slot="scroll-area-viewport"] > div {
+  width: 100%;
+  min-width: 0 !important;
+}
+
+.code-lines {
+  width: max-content;
+  min-width: 100%;
+  tab-size: 2;
+}
+
+.code-line {
+  display: flex;
+  min-height: 1.5rem;
+  padding-right: 1rem;
+  transition:
+    opacity 120ms ease-out,
+    background-color 120ms ease-out;
+}
+
+.code-line-number {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  display: block;
+  flex: 0 0 3.5rem;
+  align-self: stretch;
+  padding: 0 0.875rem 0 0.5rem;
+  color: var(--muted-foreground);
+  background: var(--code-background);
+  text-align: right;
+  font: inherit;
+  font-size: 0.6875rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.code-line-number:hover {
+  color: var(--foreground);
+  background: var(--accent);
+}
+
+.code-line-number:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: -2px;
+}
+
+.code-line-number-hidden {
+  flex-basis: 1.5rem;
+  padding-inline: 0.375rem;
+  text-align: center;
+}
+
+.code-line-number-hidden:not(:hover):not(:focus-visible):not(
+    [aria-pressed="true"]
+  ) {
+  color: transparent;
+}
+
+.code-line-content {
+  display: block;
+  min-width: 0;
+  flex: 1;
+  white-space: pre;
+}
+
+.code-scroll[data-wrap="true"] .code-lines {
+  width: 100%;
+  min-width: 0;
+}
+
+.code-scroll[data-wrap="true"] .code-line-content {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.code-line-selected,
+.code-line-selected .code-line-number {
+  background: color-mix(in oklab, var(--primary) 12%, var(--code-background));
+}
+
+.code-line-highlighted,
+.code-line-highlighted .code-line-number {
+  background: color-mix(in oklab, var(--primary) 6%, var(--code-background));
+}
+
+.code-line-selected .code-line-number {
+  color: var(--primary);
+}
+
+.code-line-dimmed .code-line-content {
+  opacity: 0.38;
+}
+
+.code-line-dimmed:hover .code-line-content,
+.code-line-dimmed:focus-within .code-line-content {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .code-workbench *,
+  .code-workbench *::before,
+  .code-workbench *::after {
+    animation-duration: 0s !important;
+    transition-duration: 0s !important;
+  }
+}

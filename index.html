@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#fafafa" />
+    <meta
+      name="description"
+      content="算法知识库与代码工作台。检索、阅读并管理你的算法模板。"
+    />
+    <title>模板库 · Algorithm</title>
+    <script>
+      const redirectedPath = new URLSearchParams(location.search).get(
+        "__pages_path",
+      );
+      if (location.pathname === "%BASE_URL%" && redirectedPath) {
+        try {
+          const restored = new URL(redirectedPath, location.origin);
+          if (
+            restored.origin === location.origin &&
+            restored.pathname.startsWith("%BASE_URL%")
+          ) {
+            history.replaceState(
+              null,
+              "",
+              restored.pathname + restored.search + restored.hash,
+            );
+          }
+        } catch {}
+      }
+    </script>
+    <script>
+      try {
+        const theme =
+          JSON.parse(localStorage.getItem("algorithm-preferences") || "{}")
+            .state?.theme || "system";
+        document.documentElement.classList.toggle(
+          "dark",
+          theme === "dark" ||
+            (theme === "system" &&
+              matchMedia("(prefers-color-scheme: dark)").matches),
+        );
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

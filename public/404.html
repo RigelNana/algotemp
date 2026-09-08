@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>打开 Algorithm</title>
+    <script>
+      const entry = new URL("/algotemp/", location.origin);
+      entry.searchParams.set(
+        "__pages_path",
+        location.pathname + location.search + location.hash,
+      );
+      location.replace(entry.href);
+    </script>
+  </head>
+  <body>
+    <noscript
+      >请启用 JavaScript 后<a href="/algotemp/">打开 Algorithm</a>。</noscript
+    >
+  </body>
+</html>
