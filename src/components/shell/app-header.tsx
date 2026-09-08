@@ -1,11 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import {
-  BookOpen,
-  Keyboard,
-  MoreHorizontal,
-  Search,
-  Settings2,
-} from "lucide-react";
+import { BookOpen, Search } from "lucide-react";
 import { algorithms, categories } from "@/algorithms/registry";
 import {
   Breadcrumb,
@@ -16,12 +10,6 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
 import {
   Tooltip,
@@ -31,11 +19,7 @@ import {
 import { ThemeToggle } from "@/components/shared/theme-toggle";
 import { useCommandMenu } from "./command-menu";
 
-export function AppHeader({
-  openSettings,
-}: {
-  openSettings: (section?: "preferences" | "shortcuts") => void;
-}) {
+export function AppHeader() {
   const { isMobile } = useSidebar();
   const { openCommand } = useCommandMenu();
   const pathname = useRouterState({
@@ -124,31 +108,6 @@ export function AppHeader({
         <TooltipContent>搜索算法</TooltipContent>
       </Tooltip>
       <ThemeToggle compact />
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="size-8 text-muted-foreground"
-            aria-label="更多工作区操作"
-          >
-            <MoreHorizontal className="size-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuItem onSelect={() => openSettings("preferences")}>
-            <Settings2 />
-            设置
-          </DropdownMenuItem>
-          <DropdownMenuItem onSelect={() => openSettings("shortcuts")}>
-            <Keyboard />
-            键盘快捷键
-          </DropdownMenuItem>
-          <DropdownMenuItem onSelect={() => openCommand("commands")}>
-            打开命令面板
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
     </header>
   );
 }

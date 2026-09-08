@@ -7,7 +7,6 @@ import {
   ChevronRight,
   Clock3,
   Folder,
-  Search,
   Settings2,
   Star,
   X,
@@ -16,7 +15,6 @@ import { categories } from "@/algorithms/registry";
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarGroup,
   SidebarGroupLabel,
   SidebarHeader,
@@ -37,8 +35,6 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { ThemeToggle } from "@/components/shared/theme-toggle";
-import { useCommandMenu } from "@/components/shell/command-menu";
 import { motionTimings } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
@@ -46,6 +42,7 @@ const navigation = [
   { to: "/algorithms", title: "模板库", icon: BookOpen },
   { to: "/favorites", title: "收藏", icon: Star },
   { to: "/recent", title: "最近访问", icon: Clock3 },
+  { to: "/settings", title: "设置", icon: Settings2 },
 ] as const;
 
 function ActiveIndicator() {
@@ -83,36 +80,14 @@ function CategoryTree({
     if (containsActive) setOpen(true);
   }, [containsActive]);
 
-  if (collapsed)
-    return (
-      <SidebarMenuItem>
-        <SidebarMenuButton
-          asChild
-          tooltip={category.title}
-          isActive={containsActive}
-          className="relative"
-        >
-          <Link
-            to="/algorithms/$category"
-            params={{ category: category.slug }}
-            onClick={closeMobile}
-            aria-label={category.title}
-          >
-            <Folder />
-            <span>{category.title}</span>
-            {containsActive && <ActiveIndicator />}
-          </Link>
-        </SidebarMenuButton>
-      </SidebarMenuItem>
-    );
-
   return (
-    <Collapsible asChild open={open} onOpenChange={setOpen}>
+    <Collapsible asChild open={open && !collapsed} onOpenChange={setOpen}>
       <SidebarMenuItem>
         <div className="flex items-center gap-0.5">
           <SidebarMenuButton
             asChild
-            isActive={activeCategory}
+            tooltip={category.title}
+            isActive={activeCategory || (collapsed && containsActive)}
             className="relative flex-1"
           >
             <Link
@@ -122,14 +97,21 @@ function CategoryTree({
             >
               <Folder />
               <span>{category.title}</span>
-              {activeCategory && <ActiveIndicator />}
+              {(activeCategory || (collapsed && containsActive)) && (
+                <ActiveIndicator />
+              )}
             </Link>
           </SidebarMenuButton>
           <CollapsibleTrigger asChild>
             <Button
               variant="ghost"
               size="icon"
-              className="size-7 shrink-0"
+              disabled={collapsed}
+              className={cn(
+                "size-7 shrink-0 transition-[width,opacity] duration-200",
+                collapsed &&
+                  "pointer-events-none w-0 overflow-hidden opacity-0",
+              )}
               aria-label={`${open ? "收起" : "展开"}${category.title}`}
             >
               <motion.span
@@ -142,7 +124,7 @@ function CategoryTree({
           </CollapsibleTrigger>
         </div>
         <AnimatePresence initial={false}>
-          {open && (
+          {open && !collapsed && (
             <CollapsibleContent forceMount asChild>
               <motion.div
                 initial={{
@@ -195,10 +177,9 @@ function CategoryTree({
   );
 }
 
-export function AppSidebar({ openSettings }: { openSettings: () => void }) {
+export function AppSidebar() {
   const { state, isMobile, setOpenMobile } = useSidebar();
   const collapsed = state === "collapsed" && !isMobile;
-  const { openCommand } = useCommandMenu();
   const pathname = useRouterState({
     select: (router) => router.location.pathname,
   });
@@ -207,68 +188,47 @@ export function AppSidebar({ openSettings }: { openSettings: () => void }) {
 
   return (
     <Sidebar embedded collapsible="icon" className="border-r-0">
-      <SidebarHeader
-        className={cn("shrink-0 gap-3 px-3 pb-3 pt-0", collapsed && "px-3")}
-      >
-        <div
-          className={cn(
-            "flex h-[52px] items-center justify-between gap-2",
-            collapsed && "justify-center",
-          )}
-        >
-          {collapsed ? (
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <SidebarTrigger aria-label="展开侧边栏" />
-              </TooltipTrigger>
-              <TooltipContent side="right">展开侧边栏</TooltipContent>
-            </Tooltip>
-          ) : (
-            <>
-              <Link
-                to="/algorithms"
+      <SidebarHeader className="shrink-0 px-3 pb-3 pt-0">
+        <div className="relative h-[52px] overflow-hidden">
+          <Link
+            to="/algorithms"
+            onClick={closeMobile}
+            tabIndex={collapsed ? -1 : undefined}
+            aria-hidden={collapsed || undefined}
+            className={cn(
+              "absolute inset-y-0 left-0 flex w-[170px] items-center gap-2.5 whitespace-nowrap rounded-sm font-semibold tracking-tight transition-opacity duration-200 ease-out focus-visible:ring-2 focus-visible:ring-ring",
+              collapsed ? "pointer-events-none opacity-0" : "opacity-100",
+            )}
+          >
+            <Boxes className="size-5 text-primary" strokeWidth={1.7} />
+            <span>Algorithm</span>
+          </Link>
+          <div className="absolute right-0 top-3 z-10 rounded-sm bg-sidebar">
+            {isMobile ? (
+              <Button
+                variant="ghost"
+                size="icon"
+                className="size-7"
                 onClick={closeMobile}
-                className="flex min-w-0 items-center gap-2.5 rounded-sm font-semibold tracking-tight outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                aria-label="关闭导航"
               >
-                <Boxes className="size-5 text-primary" strokeWidth={1.7} />
-                <span>Algorithm</span>
-              </Link>
-              {isMobile ? (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="size-7"
-                  onClick={closeMobile}
-                  aria-label="关闭导航"
-                >
-                  <X />
-                </Button>
-              ) : (
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <SidebarTrigger
-                      aria-label="收起侧边栏"
-                      className="text-muted-foreground"
-                    />
-                  </TooltipTrigger>
-                  <TooltipContent side="right">收起侧边栏</TooltipContent>
-                </Tooltip>
-              )}
-            </>
-          )}
+                <X />
+              </Button>
+            ) : (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <SidebarTrigger
+                    aria-label={collapsed ? "展开侧边栏" : "收起侧边栏"}
+                    className="text-muted-foreground"
+                  />
+                </TooltipTrigger>
+                <TooltipContent side="right">
+                  {collapsed ? "展开侧边栏" : "收起侧边栏"}
+                </TooltipContent>
+              </Tooltip>
+            )}
+          </div>
         </div>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <button
-              onClick={() => openCommand("search")}
-              aria-label="搜索算法"
-              className="flex size-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-sidebar-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
-            >
-              <Search className="size-3.5 shrink-0" />
-            </button>
-          </TooltipTrigger>
-          <TooltipContent side="right">搜索</TooltipContent>
-        </Tooltip>
       </SidebarHeader>
       <SidebarContent className="gap-3">
         <SidebarGroup className="px-3 py-0">
@@ -318,33 +278,6 @@ export function AppSidebar({ openSettings }: { openSettings: () => void }) {
           </SidebarGroup>
         )}
       </SidebarContent>
-      <SidebarFooter
-        className={cn(
-          "shrink-0 border-t border-sidebar-border px-3 py-3",
-          collapsed ? "items-center" : "flex-row items-center justify-between",
-        )}
-      >
-        <ThemeToggle compact />
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="size-8 text-muted-foreground"
-              onClick={() => {
-                closeMobile();
-                openSettings();
-              }}
-              aria-label="打开设置"
-            >
-              <Settings2 className="size-4" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent side={collapsed ? "right" : "top"}>
-            设置
-          </TooltipContent>
-        </Tooltip>
-      </SidebarFooter>
     </Sidebar>
   );
 }

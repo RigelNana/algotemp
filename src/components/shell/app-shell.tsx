@@ -19,13 +19,7 @@ import { CommandMenuProvider } from "./command-menu";
 import { AppHeader } from "./app-header";
 import { usePreferences } from "@/stores/preferences";
 
-function Workspace({
-  children,
-  openSettings,
-}: {
-  children: ReactNode;
-  openSettings: (section?: "preferences" | "shortcuts") => void;
-}) {
+function Workspace({ children }: { children: ReactNode }) {
   const { open, isMobile } = useSidebar();
   const sidebarWidth = usePreferences((state) => state.sidebarWidth);
   const setSidebarWidth = usePreferences((state) => state.setSidebarWidth);
@@ -57,7 +51,7 @@ function Workspace({
       tabIndex={-1}
       className="flex h-full min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-background outline-none"
     >
-      <AppHeader openSettings={openSettings} />
+      <AppHeader />
       <div className="min-h-0 flex-1 overflow-hidden">{children}</div>
     </main>
   );
@@ -65,7 +59,7 @@ function Workspace({
   if (isMobile)
     return (
       <>
-        <AppSidebar openSettings={openSettings} />
+        <AppSidebar />
         {content}
       </>
     );
@@ -107,7 +101,7 @@ function Workspace({
         groupResizeBehavior="preserve-pixel-size"
         className="h-full min-h-0 overflow-hidden"
       >
-        <AppSidebar openSettings={openSettings} />
+        <AppSidebar />
       </ResizablePanel>
       <ResizableHandle
         disabled={!open}
@@ -156,7 +150,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           跳到主要内容
         </a>
         <CommandMenuProvider openSettings={openSettings}>
-          <Workspace openSettings={openSettings}>{children}</Workspace>
+          <Workspace>{children}</Workspace>
         </CommandMenuProvider>
       </SidebarProvider>
     </LayoutGroup>
