@@ -1,13 +1,14 @@
 import type { Algorithm } from "./types";
+import { catalog, type CatalogCategory } from "./catalog";
 
-// Add real templates here. Navigation, search and category routes derive from this registry.
-// id is stable; category and slug are URL segments. Each implementation language is unique.
+// Add real templates here; the topic catalog is maintained separately.
+// category is a catalog slug; optional topicId associates a template with a catalog node.
 export const algorithms: Algorithm[] = [];
 
 const categoryMap = new Map<
   string,
-  { slug: string; title: string; algorithms: Algorithm[] }
->();
+  CatalogCategory & { algorithms: Algorithm[] }
+>(catalog.map((category) => [category.slug, { ...category, algorithms: [] }]));
 for (const algorithm of algorithms) {
   const category = categoryMap.get(algorithm.category);
   if (category) {
@@ -17,6 +18,7 @@ for (const algorithm of algorithms) {
       slug: algorithm.category,
       title: algorithm.categoryLabel ?? algorithm.category,
       algorithms: [algorithm],
+      topics: [],
     });
   }
 }

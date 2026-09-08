@@ -1,0 +1,2102 @@
+[
+  {
+    "slug": "sliding-window",
+    "title": "滑动窗口与双指针",
+    "source": {
+      "title": "滑动窗口与双指针题单",
+      "author": "灵茶山艾府（0x3F）",
+      "url": "https://leetcode.cn/circle/discuss/0viNMK/"
+    },
+    "topics": [
+      {
+        "id": "sliding-window/1",
+        "title": "定长滑动窗口",
+        "children": [
+          {
+            "id": "sliding-window/1/1",
+            "title": "基础",
+            "children": []
+          },
+          {
+            "id": "sliding-window/1/2",
+            "title": "进阶（选做）",
+            "children": []
+          },
+          {
+            "id": "sliding-window/1/3",
+            "title": "其他（选做）",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "sliding-window/2",
+        "title": "不定长滑动窗口",
+        "children": [
+          {
+            "id": "sliding-window/2/1",
+            "title": "越短越合法 / 求最长 / 最大",
+            "children": [
+              {
+                "id": "sliding-window/2/1/1",
+                "title": "基础",
+                "children": []
+              },
+              {
+                "id": "sliding-window/2/1/2",
+                "title": "进阶（选做）",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "sliding-window/2/2",
+            "title": "越长越合法 / 求最短 / 最小",
+            "children": []
+          },
+          {
+            "id": "sliding-window/2/3",
+            "title": "求子数组个数",
+            "children": [
+              {
+                "id": "sliding-window/2/3/1",
+                "title": "越短越合法",
+                "children": []
+              },
+              {
+                "id": "sliding-window/2/3/2",
+                "title": "越长越合法",
+                "children": []
+              },
+              {
+                "id": "sliding-window/2/3/3",
+                "title": "恰好型滑动窗口",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "sliding-window/2/4",
+            "title": "其他（选做）",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "sliding-window/3",
+        "title": "单序列双指针",
+        "children": [
+          {
+            "id": "sliding-window/3/1",
+            "title": "相向双指针",
+            "children": [
+              {
+                "id": "sliding-window/3/1/1",
+                "title": "基础题",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "sliding-window/3/2",
+            "title": "同向双指针",
+            "children": [
+              {
+                "id": "sliding-window/3/2/1",
+                "title": "基础题",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "sliding-window/3/3",
+            "title": "背向双指针",
+            "children": [
+              {
+                "id": "sliding-window/3/3/1",
+                "title": "基础题",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "sliding-window/3/4",
+            "title": "原地修改",
+            "children": [
+              {
+                "id": "sliding-window/3/4/1",
+                "title": "基础题",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "sliding-window/4",
+        "title": "双序列双指针",
+        "children": [
+          {
+            "id": "sliding-window/4/1",
+            "title": "双指针",
+            "children": [
+              {
+                "id": "sliding-window/4/1/1",
+                "title": "基础题",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "sliding-window/4/2",
+            "title": "判断子序列",
+            "children": [
+              {
+                "id": "sliding-window/4/2/1",
+                "title": "基础题",
+                "children": []
+              },
+              {
+                "id": "sliding-window/4/2/2",
+                "title": "进阶题",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "sliding-window/5",
+        "title": "三指针",
+        "children": [
+          {
+            "id": "sliding-window/5/1",
+            "title": "基础题",
+            "children": []
+          },
+          {
+            "id": "sliding-window/5/2",
+            "title": "思维扩展",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "binary-search",
+    "title": "二分算法",
+    "source": {
+      "title": "二分算法题单",
+      "author": "灵茶山艾府（0x3F）",
+      "url": "https://leetcode.cn/circle/discuss/SqopEo/"
+    },
+    "topics": [
+      {
+        "id": "binary-search/1",
+        "title": "二分查找",
+        "children": [
+          {
+            "id": "binary-search/1/1",
+            "title": "基础",
+            "children": []
+          },
+          {
+            "id": "binary-search/1/2",
+            "title": "进阶",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "binary-search/2",
+        "title": "二分答案",
+        "children": [
+          {
+            "id": "binary-search/2/1",
+            "title": "求最小",
+            "children": [
+              {
+                "id": "binary-search/2/1/1",
+                "title": "思维扩展",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "binary-search/2/2",
+            "title": "求最大",
+            "children": []
+          },
+          {
+            "id": "binary-search/2/3",
+            "title": "二分间接值",
+            "children": []
+          },
+          {
+            "id": "binary-search/2/4",
+            "title": "最小化最大值",
+            "children": []
+          },
+          {
+            "id": "binary-search/2/5",
+            "title": "最大化最小值",
+            "children": []
+          },
+          {
+            "id": "binary-search/2/6",
+            "title": "第 K 小/大",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "binary-search/3",
+        "title": "三分法",
+        "children": []
+      },
+      {
+        "id": "binary-search/4",
+        "title": "其他",
+        "children": []
+      }
+    ]
+  },
+  {
+    "slug": "monotonic-stack",
+    "title": "单调栈",
+    "source": {
+      "title": "单调栈题单",
+      "author": "灵茶山艾府（0x3F）",
+      "url": "https://leetcode.cn/circle/discuss/9oZFK9/"
+    },
+    "topics": [
+      {
+        "id": "monotonic-stack/1",
+        "title": "单调栈",
+        "children": [
+          {
+            "id": "monotonic-stack/1/1",
+            "title": "基础",
+            "children": []
+          },
+          {
+            "id": "monotonic-stack/1/2",
+            "title": "进阶（选做）",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "monotonic-stack/2",
+        "title": "矩形",
+        "children": []
+      },
+      {
+        "id": "monotonic-stack/3",
+        "title": "贡献法",
+        "children": []
+      },
+      {
+        "id": "monotonic-stack/4",
+        "title": "最小字典序",
+        "children": []
+      }
+    ]
+  },
+  {
+    "slug": "grid",
+    "title": "网格图",
+    "source": {
+      "title": "网格图题单",
+      "author": "灵茶山艾府（0x3F）",
+      "url": "https://leetcode.cn/circle/discuss/YiXPXW/"
+    },
+    "topics": [
+      {
+        "id": "grid/1",
+        "title": "网格图 DFS",
+        "children": [
+          {
+            "id": "grid/1/1",
+            "title": "基础",
+            "children": []
+          },
+          {
+            "id": "grid/1/2",
+            "title": "进阶（会员题）",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "grid/2",
+        "title": "网格图 BFS",
+        "children": [
+          {
+            "id": "grid/2/1",
+            "title": "基础",
+            "children": []
+          },
+          {
+            "id": "grid/2/2",
+            "title": "进阶（会员题）",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "grid/3",
+        "title": "网格图 0-1 BFS",
+        "children": [
+          {
+            "id": "grid/3/1",
+            "title": "基础",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "grid/4",
+        "title": "网格图 Dijkstra",
+        "children": []
+      },
+      {
+        "id": "grid/5",
+        "title": "综合应用",
+        "children": [
+          {
+            "id": "grid/5/1",
+            "title": "经典题",
+            "children": []
+          },
+          {
+            "id": "grid/5/2",
+            "title": "LCP 与变形题",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "bitwise",
+    "title": "位运算",
+    "source": {
+      "title": "位运算题单",
+      "author": "灵茶山艾府（0x3F）",
+      "url": "https://leetcode.cn/circle/discuss/dHn9Vk/"
+    },
+    "topics": [
+      {
+        "id": "bitwise/1",
+        "title": "基础题",
+        "children": []
+      },
+      {
+        "id": "bitwise/2",
+        "title": "异或（XOR）的性质",
+        "children": []
+      },
+      {
+        "id": "bitwise/3",
+        "title": "与或（AND/OR）的性质",
+        "children": []
+      },
+      {
+        "id": "bitwise/4",
+        "title": "拆位 / 贡献法",
+        "children": []
+      },
+      {
+        "id": "bitwise/5",
+        "title": "试填法",
+        "children": []
+      },
+      {
+        "id": "bitwise/6",
+        "title": "恒等式",
+        "children": []
+      },
+      {
+        "id": "bitwise/7",
+        "title": "线性基",
+        "children": []
+      },
+      {
+        "id": "bitwise/8",
+        "title": "思维题",
+        "children": []
+      },
+      {
+        "id": "bitwise/9",
+        "title": "其他",
+        "children": []
+      }
+    ]
+  },
+  {
+    "slug": "graph",
+    "title": "图论算法",
+    "source": {
+      "title": "图论算法题单",
+      "author": "灵茶山艾府（0x3F）",
+      "url": "https://leetcode.cn/circle/discuss/01LUak/"
+    },
+    "topics": [
+      {
+        "id": "graph/1",
+        "title": "图的遍历",
+        "children": [
+          {
+            "id": "graph/1/1",
+            "title": "深度优先搜索（DFS）",
+            "children": []
+          },
+          {
+            "id": "graph/1/2",
+            "title": "广度优先搜索（BFS）",
+            "children": []
+          },
+          {
+            "id": "graph/1/3",
+            "title": "图论建模 + BFS 最短路",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "graph/2",
+        "title": "拓扑排序",
+        "children": [
+          {
+            "id": "graph/2/1",
+            "title": "拓扑排序",
+            "children": []
+          },
+          {
+            "id": "graph/2/2",
+            "title": "在拓扑序上 DP",
+            "children": []
+          },
+          {
+            "id": "graph/2/3",
+            "title": "基环树",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "graph/3",
+        "title": "最短路",
+        "children": [
+          {
+            "id": "graph/3/1",
+            "title": "单源最短路：Dijkstra 算法",
+            "children": []
+          },
+          {
+            "id": "graph/3/2",
+            "title": "全源最短路：Floyd 算法",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "graph/4",
+        "title": "最小生成树",
+        "children": []
+      },
+      {
+        "id": "graph/5",
+        "title": "欧拉路径 / 欧拉回路",
+        "children": []
+      },
+      {
+        "id": "graph/6",
+        "title": "强连通分量 / 双连通分量",
+        "children": []
+      },
+      {
+        "id": "graph/7",
+        "title": "二分图染色",
+        "children": []
+      },
+      {
+        "id": "graph/8",
+        "title": "网络流",
+        "children": []
+      },
+      {
+        "id": "graph/9",
+        "title": "其他",
+        "children": []
+      },
+      {
+        "id": "graph/10",
+        "title": "树上算法",
+        "children": []
+      }
+    ]
+  },
+  {
+    "slug": "dynamic-programming",
+    "title": "动态规划",
+    "source": {
+      "title": "动态规划题单",
+      "author": "灵茶山艾府（0x3F）",
+      "url": "https://leetcode.cn/circle/discuss/tXLS3i/"
+    },
+    "topics": [
+      {
+        "id": "dynamic-programming/1",
+        "title": "入门 DP",
+        "children": [
+          {
+            "id": "dynamic-programming/1/1",
+            "title": "爬楼梯",
+            "children": []
+          },
+          {
+            "id": "dynamic-programming/1/2",
+            "title": "打家劫舍",
+            "children": []
+          },
+          {
+            "id": "dynamic-programming/1/3",
+            "title": "最大子数组和（最大子段和）",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "dynamic-programming/2",
+        "title": "网格图 DP",
+        "children": [
+          {
+            "id": "dynamic-programming/2/1",
+            "title": "基础",
+            "children": []
+          },
+          {
+            "id": "dynamic-programming/2/2",
+            "title": "进阶",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "dynamic-programming/3",
+        "title": "背包",
+        "children": [
+          {
+            "id": "dynamic-programming/3/1",
+            "title": "0-1 背包",
+            "children": []
+          },
+          {
+            "id": "dynamic-programming/3/2",
+            "title": "完全背包",
+            "children": []
+          },
+          {
+            "id": "dynamic-programming/3/3",
+            "title": "多重背包（选做）",
+            "children": []
+          },
+          {
+            "id": "dynamic-programming/3/4",
+            "title": "分组背包",
+            "children": []
+          },
+          {
+            "id": "dynamic-programming/3/5",
+            "title": "树形背包（选做）",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "dynamic-programming/4",
+        "title": "经典线性 DP",
+        "children": [
+          {
+            "id": "dynamic-programming/4/1",
+            "title": "最长公共子序列（LCS）",
+            "children": [
+              {
+                "id": "dynamic-programming/4/1/1",
+                "title": "基础",
+                "children": []
+              },
+              {
+                "id": "dynamic-programming/4/1/2",
+                "title": "进阶",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "dynamic-programming/4/2",
+            "title": "最长递增子序列（LIS）",
+            "children": [
+              {
+                "id": "dynamic-programming/4/2/1",
+                "title": "基础",
+                "children": []
+              },
+              {
+                "id": "dynamic-programming/4/2/2",
+                "title": "进阶",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "dynamic-programming/5",
+        "title": "划分型 DP",
+        "children": [
+          {
+            "id": "dynamic-programming/5/1",
+            "title": "判定能否划分",
+            "children": []
+          },
+          {
+            "id": "dynamic-programming/5/2",
+            "title": "最优划分",
+            "children": []
+          },
+          {
+            "id": "dynamic-programming/5/3",
+            "title": "约束划分个数",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "dynamic-programming/6",
+        "title": "状态机 DP",
+        "children": [
+          {
+            "id": "dynamic-programming/6/1",
+            "title": "买卖股票",
+            "children": []
+          },
+          {
+            "id": "dynamic-programming/6/2",
+            "title": "基础",
+            "children": []
+          },
+          {
+            "id": "dynamic-programming/6/3",
+            "title": "进阶",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "dynamic-programming/7",
+        "title": "其他线性 DP",
+        "children": [
+          {
+            "id": "dynamic-programming/7/1",
+            "title": "一维 DP",
+            "children": []
+          },
+          {
+            "id": "dynamic-programming/7/2",
+            "title": "不相交区间",
+            "children": []
+          },
+          {
+            "id": "dynamic-programming/7/3",
+            "title": "子数组 DP",
+            "children": []
+          },
+          {
+            "id": "dynamic-programming/7/4",
+            "title": "合法子序列 DP",
+            "children": []
+          },
+          {
+            "id": "dynamic-programming/7/5",
+            "title": "子矩形 DP",
+            "children": []
+          },
+          {
+            "id": "dynamic-programming/7/6",
+            "title": "多维 DP",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "dynamic-programming/8",
+        "title": "区间 DP",
+        "children": [
+          {
+            "id": "dynamic-programming/8/1",
+            "title": "最长回文子序列",
+            "children": []
+          },
+          {
+            "id": "dynamic-programming/8/2",
+            "title": "区间 DP",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "dynamic-programming/9",
+        "title": "状态压缩 DP（状压 DP）",
+        "children": [
+          {
+            "id": "dynamic-programming/9/1",
+            "title": "排列型状压 DP ① 相邻无关",
+            "children": []
+          },
+          {
+            "id": "dynamic-programming/9/2",
+            "title": "排列型状压 DP ② 相邻相关",
+            "children": []
+          },
+          {
+            "id": "dynamic-programming/9/3",
+            "title": "旅行商问题（TSP）",
+            "children": []
+          },
+          {
+            "id": "dynamic-programming/9/4",
+            "title": "子集状压 DP",
+            "children": []
+          },
+          {
+            "id": "dynamic-programming/9/5",
+            "title": "轮廓线 DP",
+            "children": []
+          },
+          {
+            "id": "dynamic-programming/9/6",
+            "title": "SOS DP",
+            "children": []
+          },
+          {
+            "id": "dynamic-programming/9/7",
+            "title": "其他状压 DP",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "dynamic-programming/10",
+        "title": "数位 DP",
+        "children": [
+          {
+            "id": "dynamic-programming/10/1",
+            "title": "统计合法元素的数目",
+            "children": []
+          },
+          {
+            "id": "dynamic-programming/10/2",
+            "title": "统计合法元素的价值总和",
+            "children": []
+          },
+          {
+            "id": "dynamic-programming/10/3",
+            "title": "其他数位 DP",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "dynamic-programming/11",
+        "title": "优化 DP",
+        "children": [
+          {
+            "id": "dynamic-programming/11/1",
+            "title": "前缀和优化 DP",
+            "children": []
+          },
+          {
+            "id": "dynamic-programming/11/2",
+            "title": "单调栈优化 DP",
+            "children": []
+          },
+          {
+            "id": "dynamic-programming/11/3",
+            "title": "单调队列优化 DP",
+            "children": []
+          },
+          {
+            "id": "dynamic-programming/11/4",
+            "title": "树状数组 / 线段树优化 DP",
+            "children": []
+          },
+          {
+            "id": "dynamic-programming/11/5",
+            "title": "字典树优化 DP",
+            "children": []
+          },
+          {
+            "id": "dynamic-programming/11/6",
+            "title": "矩阵快速幂优化 DP",
+            "children": []
+          },
+          {
+            "id": "dynamic-programming/11/7",
+            "title": "斜率优化 DP",
+            "children": []
+          },
+          {
+            "id": "dynamic-programming/11/8",
+            "title": "WQS 二分优化 DP",
+            "children": []
+          },
+          {
+            "id": "dynamic-programming/11/9",
+            "title": "其他优化 DP",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "dynamic-programming/12",
+        "title": "树形 DP",
+        "children": [
+          {
+            "id": "dynamic-programming/12/1",
+            "title": "树的直径",
+            "children": []
+          },
+          {
+            "id": "dynamic-programming/12/2",
+            "title": "树上最大独立集",
+            "children": []
+          },
+          {
+            "id": "dynamic-programming/12/3",
+            "title": "树上最小支配集",
+            "children": []
+          },
+          {
+            "id": "dynamic-programming/12/4",
+            "title": "换根 DP",
+            "children": []
+          },
+          {
+            "id": "dynamic-programming/12/5",
+            "title": "其他树形 DP",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "dynamic-programming/13",
+        "title": "图 DP",
+        "children": []
+      },
+      {
+        "id": "dynamic-programming/14",
+        "title": "博弈 DP",
+        "children": []
+      },
+      {
+        "id": "dynamic-programming/15",
+        "title": "概率 / 期望 DP",
+        "children": []
+      },
+      {
+        "id": "dynamic-programming/16",
+        "title": "专题：输出具体方案（打印方案）",
+        "children": []
+      },
+      {
+        "id": "dynamic-programming/17",
+        "title": "专题：前后缀分解",
+        "children": []
+      },
+      {
+        "id": "dynamic-programming/18",
+        "title": "专题：把 X 变成 Y",
+        "children": []
+      },
+      {
+        "id": "dynamic-programming/19",
+        "title": "专题：跳跃游戏",
+        "children": []
+      },
+      {
+        "id": "dynamic-programming/20",
+        "title": "其他",
+        "children": []
+      }
+    ]
+  },
+  {
+    "slug": "data-structures",
+    "title": "常用数据结构",
+    "source": {
+      "title": "常用数据结构题单",
+      "author": "灵茶山艾府（0x3F）",
+      "url": "https://leetcode.cn/circle/discuss/mOr1u6/"
+    },
+    "topics": [
+      {
+        "id": "data-structures/1",
+        "title": "常用枚举技巧",
+        "children": [
+          {
+            "id": "data-structures/1/1",
+            "title": "枚举右，维护左",
+            "children": [
+              {
+                "id": "data-structures/1/1/1",
+                "title": "进阶",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "data-structures/1/2",
+            "title": "枚举中间",
+            "children": []
+          },
+          {
+            "id": "data-structures/1/3",
+            "title": "遍历对角线",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "data-structures/2",
+        "title": "前缀和",
+        "children": [
+          {
+            "id": "data-structures/2/1",
+            "title": "基础",
+            "children": []
+          },
+          {
+            "id": "data-structures/2/2",
+            "title": "前缀和与哈希表",
+            "children": []
+          },
+          {
+            "id": "data-structures/2/3",
+            "title": "距离和",
+            "children": []
+          },
+          {
+            "id": "data-structures/2/4",
+            "title": "状态压缩前缀和",
+            "children": []
+          },
+          {
+            "id": "data-structures/2/5",
+            "title": "进阶",
+            "children": []
+          },
+          {
+            "id": "data-structures/2/6",
+            "title": "二维前缀和",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "data-structures/3",
+        "title": "差分",
+        "children": [
+          {
+            "id": "data-structures/3/1",
+            "title": "一维差分",
+            "children": [
+              {
+                "id": "data-structures/3/1/1",
+                "title": "基础",
+                "children": []
+              },
+              {
+                "id": "data-structures/3/1/2",
+                "title": "进阶",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "data-structures/3/2",
+            "title": "二维差分",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "data-structures/4",
+        "title": "栈",
+        "children": [
+          {
+            "id": "data-structures/4/1",
+            "title": "基础",
+            "children": []
+          },
+          {
+            "id": "data-structures/4/2",
+            "title": "进阶",
+            "children": []
+          },
+          {
+            "id": "data-structures/4/3",
+            "title": "邻项消除",
+            "children": []
+          },
+          {
+            "id": "data-structures/4/4",
+            "title": "合法括号字符串（RBS）",
+            "children": []
+          },
+          {
+            "id": "data-structures/4/5",
+            "title": "表达式解析",
+            "children": []
+          },
+          {
+            "id": "data-structures/4/6",
+            "title": "对顶栈",
+            "children": []
+          },
+          {
+            "id": "data-structures/4/7",
+            "title": "单调栈",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "data-structures/5",
+        "title": "队列",
+        "children": [
+          {
+            "id": "data-structures/5/1",
+            "title": "基础",
+            "children": []
+          },
+          {
+            "id": "data-structures/5/2",
+            "title": "设计",
+            "children": []
+          },
+          {
+            "id": "data-structures/5/3",
+            "title": "双端队列",
+            "children": []
+          },
+          {
+            "id": "data-structures/5/4",
+            "title": "单调队列",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "data-structures/6",
+        "title": "堆（优先队列）",
+        "children": [
+          {
+            "id": "data-structures/6/1",
+            "title": "基础",
+            "children": []
+          },
+          {
+            "id": "data-structures/6/2",
+            "title": "进阶",
+            "children": []
+          },
+          {
+            "id": "data-structures/6/3",
+            "title": "第 K 小/大",
+            "children": []
+          },
+          {
+            "id": "data-structures/6/4",
+            "title": "重排元素",
+            "children": []
+          },
+          {
+            "id": "data-structures/6/5",
+            "title": "反悔堆",
+            "children": []
+          },
+          {
+            "id": "data-structures/6/6",
+            "title": "懒删除堆",
+            "children": []
+          },
+          {
+            "id": "data-structures/6/7",
+            "title": "对顶堆（滑动窗口第 K 小/大）",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "data-structures/7",
+        "title": "字典树（trie）",
+        "children": [
+          {
+            "id": "data-structures/7/1",
+            "title": "基础",
+            "children": []
+          },
+          {
+            "id": "data-structures/7/2",
+            "title": "进阶",
+            "children": []
+          },
+          {
+            "id": "data-structures/7/3",
+            "title": "字典树优化 DP",
+            "children": []
+          },
+          {
+            "id": "data-structures/7/4",
+            "title": "0-1 字典树（异或字典树）",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "data-structures/8",
+        "title": "并查集",
+        "children": [
+          {
+            "id": "data-structures/8/1",
+            "title": "基础",
+            "children": []
+          },
+          {
+            "id": "data-structures/8/2",
+            "title": "进阶",
+            "children": []
+          },
+          {
+            "id": "data-structures/8/3",
+            "title": "GCD 并查集",
+            "children": []
+          },
+          {
+            "id": "data-structures/8/4",
+            "title": "数组上的并查集",
+            "children": []
+          },
+          {
+            "id": "data-structures/8/5",
+            "title": "区间并查集",
+            "children": []
+          },
+          {
+            "id": "data-structures/8/6",
+            "title": "带权并查集（边权并查集）",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "data-structures/9",
+        "title": "树状数组和线段树",
+        "children": [
+          {
+            "id": "data-structures/9/1",
+            "title": "树状数组",
+            "children": []
+          },
+          {
+            "id": "data-structures/9/2",
+            "title": "逆序对",
+            "children": []
+          },
+          {
+            "id": "data-structures/9/3",
+            "title": "线段树（无区间更新）",
+            "children": []
+          },
+          {
+            "id": "data-structures/9/4",
+            "title": "Lazy 线段树（有区间更新）",
+            "children": []
+          },
+          {
+            "id": "data-structures/9/5",
+            "title": "动态开点线段树",
+            "children": []
+          },
+          {
+            "id": "data-structures/9/6",
+            "title": "可持久化线段树",
+            "children": []
+          },
+          {
+            "id": "data-structures/9/7",
+            "title": "ST 表（Sparse Table）",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "data-structures/10",
+        "title": "伸展树（Splay 树）",
+        "children": [
+          {
+            "id": "data-structures/10/1",
+            "title": "基础",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "data-structures/11",
+        "title": "根号算法",
+        "children": [
+          {
+            "id": "data-structures/11/1",
+            "title": "根号分解（Sqrt Decomposition）",
+            "children": []
+          },
+          {
+            "id": "data-structures/11/2",
+            "title": "莫队算法",
+            "children": []
+          },
+          {
+            "id": "data-structures/11/3",
+            "title": "其他",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "data-structures/12",
+        "title": "专题：离线算法",
+        "children": [
+          {
+            "id": "data-structures/12/1",
+            "title": "基础",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "data-structures/13",
+        "title": "专题：比较复杂的题目",
+        "children": [
+          {
+            "id": "data-structures/13/1",
+            "title": "Part A",
+            "children": []
+          },
+          {
+            "id": "data-structures/13/2",
+            "title": "Part B",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "math",
+    "title": "数学算法",
+    "source": {
+      "title": "数学算法题单",
+      "author": "灵茶山艾府（0x3F）",
+      "url": "https://leetcode.cn/circle/discuss/IYT3ss/"
+    },
+    "topics": [
+      {
+        "id": "math/1",
+        "title": "数论",
+        "children": [
+          {
+            "id": "math/1/1",
+            "title": "判断质数",
+            "children": []
+          },
+          {
+            "id": "math/1/2",
+            "title": "预处理质数（筛质数）",
+            "children": []
+          },
+          {
+            "id": "math/1/3",
+            "title": "质因数分解",
+            "children": []
+          },
+          {
+            "id": "math/1/4",
+            "title": "阶乘分解",
+            "children": []
+          },
+          {
+            "id": "math/1/5",
+            "title": "因子",
+            "children": []
+          },
+          {
+            "id": "math/1/6",
+            "title": "最大公约数（GCD）",
+            "children": []
+          },
+          {
+            "id": "math/1/7",
+            "title": "最小公倍数（LCM）",
+            "children": []
+          },
+          {
+            "id": "math/1/8",
+            "title": "互质",
+            "children": []
+          },
+          {
+            "id": "math/1/9",
+            "title": "同余",
+            "children": []
+          },
+          {
+            "id": "math/1/10",
+            "title": "数论分块",
+            "children": []
+          },
+          {
+            "id": "math/1/11",
+            "title": "其他",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "math/2",
+        "title": "组合数学",
+        "children": [
+          {
+            "id": "math/2/1",
+            "title": "乘法原理",
+            "children": []
+          },
+          {
+            "id": "math/2/2",
+            "title": "组合计数",
+            "children": []
+          },
+          {
+            "id": "math/2/3",
+            "title": "放球问题",
+            "children": []
+          },
+          {
+            "id": "math/2/4",
+            "title": "容斥原理",
+            "children": []
+          },
+          {
+            "id": "math/2/5",
+            "title": "贡献法",
+            "children": []
+          },
+          {
+            "id": "math/2/6",
+            "title": "生成函数（母函数）",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "math/3",
+        "title": "概率期望",
+        "children": [
+          {
+            "id": "math/3/1",
+            "title": "随机数据下显著更快的算法",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "math/4",
+        "title": "博弈论",
+        "children": []
+      },
+      {
+        "id": "math/5",
+        "title": "计算几何",
+        "children": [
+          {
+            "id": "math/5/1",
+            "title": "点、线",
+            "children": []
+          },
+          {
+            "id": "math/5/2",
+            "title": "圆",
+            "children": []
+          },
+          {
+            "id": "math/5/3",
+            "title": "矩形、多边形",
+            "children": []
+          },
+          {
+            "id": "math/5/4",
+            "title": "凸包",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "math/6",
+        "title": "随机算法",
+        "children": [
+          {
+            "id": "math/6/1",
+            "title": "随机数",
+            "children": []
+          },
+          {
+            "id": "math/6/2",
+            "title": "随机化技巧",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "math/7",
+        "title": "杂项",
+        "children": [
+          {
+            "id": "math/7/1",
+            "title": "回文数",
+            "children": []
+          },
+          {
+            "id": "math/7/2",
+            "title": "整数拆分",
+            "children": []
+          },
+          {
+            "id": "math/7/3",
+            "title": "曼哈顿距离",
+            "children": []
+          },
+          {
+            "id": "math/7/4",
+            "title": "多项式",
+            "children": []
+          },
+          {
+            "id": "math/7/5",
+            "title": "快速沃尔什变换（FWT）",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "greedy",
+    "title": "贪心与思维",
+    "source": {
+      "title": "贪心与思维题单",
+      "author": "灵茶山艾府（0x3F）",
+      "url": "https://leetcode.cn/circle/discuss/g6KTKL/"
+    },
+    "topics": [
+      {
+        "id": "greedy/1",
+        "title": "贪心策略",
+        "children": [
+          {
+            "id": "greedy/1/1",
+            "title": "从最小 / 最大开始贪心",
+            "children": []
+          },
+          {
+            "id": "greedy/1/2",
+            "title": "单序列配对",
+            "children": []
+          },
+          {
+            "id": "greedy/1/3",
+            "title": "双序列配对",
+            "children": []
+          },
+          {
+            "id": "greedy/1/4",
+            "title": "从最左 / 最右开始贪心",
+            "children": []
+          },
+          {
+            "id": "greedy/1/5",
+            "title": "划分型贪心",
+            "children": []
+          },
+          {
+            "id": "greedy/1/6",
+            "title": "先枚举，再贪心",
+            "children": []
+          },
+          {
+            "id": "greedy/1/7",
+            "title": "交换论证法",
+            "children": []
+          },
+          {
+            "id": "greedy/1/8",
+            "title": "相邻不同",
+            "children": []
+          },
+          {
+            "id": "greedy/1/9",
+            "title": "反悔贪心",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "greedy/2",
+        "title": "区间贪心",
+        "children": [
+          {
+            "id": "greedy/2/1",
+            "title": "不相交区间",
+            "children": []
+          },
+          {
+            "id": "greedy/2/2",
+            "title": "区间分组",
+            "children": []
+          },
+          {
+            "id": "greedy/2/3",
+            "title": "区间选点",
+            "children": []
+          },
+          {
+            "id": "greedy/2/4",
+            "title": "区间覆盖",
+            "children": []
+          },
+          {
+            "id": "greedy/2/5",
+            "title": "合并区间",
+            "children": []
+          },
+          {
+            "id": "greedy/2/6",
+            "title": "其他区间贪心",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "greedy/3",
+        "title": "字符串贪心",
+        "children": [
+          {
+            "id": "greedy/3/1",
+            "title": "字典序最小 / 最大",
+            "children": []
+          },
+          {
+            "id": "greedy/3/2",
+            "title": "回文串贪心",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "greedy/4",
+        "title": "数学贪心",
+        "children": [
+          {
+            "id": "greedy/4/1",
+            "title": "基础",
+            "children": []
+          },
+          {
+            "id": "greedy/4/2",
+            "title": "乘积贪心",
+            "children": []
+          },
+          {
+            "id": "greedy/4/3",
+            "title": "排序不等式",
+            "children": []
+          },
+          {
+            "id": "greedy/4/4",
+            "title": "均值不等式",
+            "children": []
+          },
+          {
+            "id": "greedy/4/5",
+            "title": "中位数贪心",
+            "children": []
+          },
+          {
+            "id": "greedy/4/6",
+            "title": "归纳法",
+            "children": []
+          },
+          {
+            "id": "greedy/4/7",
+            "title": "其他数学贪心",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "greedy/5",
+        "title": "思维题",
+        "children": [
+          {
+            "id": "greedy/5/1",
+            "title": "从特殊到一般",
+            "children": []
+          },
+          {
+            "id": "greedy/5/2",
+            "title": "脑筋急转弯",
+            "children": []
+          },
+          {
+            "id": "greedy/5/3",
+            "title": "逆向思维",
+            "children": []
+          },
+          {
+            "id": "greedy/5/4",
+            "title": "等价转换",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "greedy/6",
+        "title": "构造题",
+        "children": [
+          {
+            "id": "greedy/6/1",
+            "title": "构造题",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "greedy/7",
+        "title": "交互题",
+        "children": []
+      }
+    ]
+  },
+  {
+    "slug": "trees-backtracking",
+    "title": "链表、二叉树与回溯",
+    "source": {
+      "title": "链表、二叉树与回溯题单",
+      "author": "灵茶山艾府（0x3F）",
+      "url": "https://leetcode.cn/circle/discuss/K0n2gO/"
+    },
+    "topics": [
+      {
+        "id": "trees-backtracking/1",
+        "title": "链表",
+        "children": [
+          {
+            "id": "trees-backtracking/1/1",
+            "title": "遍历链表",
+            "children": []
+          },
+          {
+            "id": "trees-backtracking/1/2",
+            "title": "删除节点",
+            "children": []
+          },
+          {
+            "id": "trees-backtracking/1/3",
+            "title": "插入节点",
+            "children": []
+          },
+          {
+            "id": "trees-backtracking/1/4",
+            "title": "反转链表",
+            "children": []
+          },
+          {
+            "id": "trees-backtracking/1/5",
+            "title": "前后指针",
+            "children": []
+          },
+          {
+            "id": "trees-backtracking/1/6",
+            "title": "快慢指针",
+            "children": []
+          },
+          {
+            "id": "trees-backtracking/1/7",
+            "title": "双指针",
+            "children": []
+          },
+          {
+            "id": "trees-backtracking/1/8",
+            "title": "合并链表",
+            "children": []
+          },
+          {
+            "id": "trees-backtracking/1/9",
+            "title": "分治",
+            "children": []
+          },
+          {
+            "id": "trees-backtracking/1/10",
+            "title": "综合应用",
+            "children": []
+          },
+          {
+            "id": "trees-backtracking/1/11",
+            "title": "其他",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "trees-backtracking/2",
+        "title": "二叉树",
+        "children": [
+          {
+            "id": "trees-backtracking/2/1",
+            "title": "遍历二叉树",
+            "children": []
+          },
+          {
+            "id": "trees-backtracking/2/2",
+            "title": "自顶向下 DFS（先序遍历）",
+            "children": []
+          },
+          {
+            "id": "trees-backtracking/2/3",
+            "title": "自底向上 DFS（后序遍历）",
+            "children": []
+          },
+          {
+            "id": "trees-backtracking/2/4",
+            "title": "自底向上 DFS：删点",
+            "children": []
+          },
+          {
+            "id": "trees-backtracking/2/5",
+            "title": "有递有归",
+            "children": []
+          },
+          {
+            "id": "trees-backtracking/2/6",
+            "title": "二叉树的直径",
+            "children": []
+          },
+          {
+            "id": "trees-backtracking/2/7",
+            "title": "回溯",
+            "children": []
+          },
+          {
+            "id": "trees-backtracking/2/8",
+            "title": "最近公共祖先",
+            "children": []
+          },
+          {
+            "id": "trees-backtracking/2/9",
+            "title": "二叉搜索树",
+            "children": []
+          },
+          {
+            "id": "trees-backtracking/2/10",
+            "title": "创建二叉树",
+            "children": []
+          },
+          {
+            "id": "trees-backtracking/2/11",
+            "title": "插入 / 删除节点",
+            "children": []
+          },
+          {
+            "id": "trees-backtracking/2/12",
+            "title": "树形 DP",
+            "children": []
+          },
+          {
+            "id": "trees-backtracking/2/13",
+            "title": "二叉树 BFS",
+            "children": []
+          },
+          {
+            "id": "trees-backtracking/2/14",
+            "title": "链表 + 二叉树",
+            "children": []
+          },
+          {
+            "id": "trees-backtracking/2/15",
+            "title": "N 叉树",
+            "children": []
+          },
+          {
+            "id": "trees-backtracking/2/16",
+            "title": "其他",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "trees-backtracking/3",
+        "title": "一般树",
+        "children": [
+          {
+            "id": "trees-backtracking/3/1",
+            "title": "遍历",
+            "children": []
+          },
+          {
+            "id": "trees-backtracking/3/2",
+            "title": "自顶向下 DFS",
+            "children": []
+          },
+          {
+            "id": "trees-backtracking/3/3",
+            "title": "自底向上 DFS",
+            "children": []
+          },
+          {
+            "id": "trees-backtracking/3/4",
+            "title": "有递有归",
+            "children": []
+          },
+          {
+            "id": "trees-backtracking/3/5",
+            "title": "树的直径",
+            "children": []
+          },
+          {
+            "id": "trees-backtracking/3/6",
+            "title": "树的拓扑排序",
+            "children": []
+          },
+          {
+            "id": "trees-backtracking/3/7",
+            "title": "DFS 时间戳",
+            "children": []
+          },
+          {
+            "id": "trees-backtracking/3/8",
+            "title": "最近公共祖先（LCA）、倍增算法",
+            "children": []
+          },
+          {
+            "id": "trees-backtracking/3/9",
+            "title": "树上滑动窗口",
+            "children": []
+          },
+          {
+            "id": "trees-backtracking/3/10",
+            "title": "树上启发式合并",
+            "children": []
+          },
+          {
+            "id": "trees-backtracking/3/11",
+            "title": "点分治",
+            "children": []
+          },
+          {
+            "id": "trees-backtracking/3/12",
+            "title": "其他",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "trees-backtracking/4",
+        "title": "回溯",
+        "children": [
+          {
+            "id": "trees-backtracking/4/1",
+            "title": "入门回溯",
+            "children": []
+          },
+          {
+            "id": "trees-backtracking/4/2",
+            "title": "子集型回溯",
+            "children": []
+          },
+          {
+            "id": "trees-backtracking/4/3",
+            "title": "划分型回溯",
+            "children": []
+          },
+          {
+            "id": "trees-backtracking/4/4",
+            "title": "组合型回溯",
+            "children": []
+          },
+          {
+            "id": "trees-backtracking/4/5",
+            "title": "排列型回溯",
+            "children": []
+          },
+          {
+            "id": "trees-backtracking/4/6",
+            "title": "有重复元素的回溯",
+            "children": []
+          },
+          {
+            "id": "trees-backtracking/4/7",
+            "title": "搜索",
+            "children": []
+          },
+          {
+            "id": "trees-backtracking/4/8",
+            "title": "折半枚举",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "trees-backtracking/5",
+        "title": "其他递归 / 分治",
+        "children": []
+      }
+    ]
+  },
+  {
+    "slug": "strings",
+    "title": "字符串",
+    "source": {
+      "title": "字符串题单",
+      "author": "灵茶山艾府（0x3F）",
+      "url": "https://leetcode.cn/circle/discuss/SJFwQI/"
+    },
+    "topics": [
+      {
+        "id": "strings/1",
+        "title": "KMP（前缀的后缀）",
+        "children": [
+          {
+            "id": "strings/1/1",
+            "title": "基础",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "strings/2",
+        "title": "Z 函数（后缀的前缀）",
+        "children": [
+          {
+            "id": "strings/2/1",
+            "title": "基础",
+            "children": []
+          },
+          {
+            "id": "strings/2/2",
+            "title": "LCP 数组",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "strings/3",
+        "title": "Manacher 算法（回文串）",
+        "children": [
+          {
+            "id": "strings/3/1",
+            "title": "基础",
+            "children": []
+          },
+          {
+            "id": "strings/3/2",
+            "title": "中心扩展法",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "strings/4",
+        "title": "字符串哈希",
+        "children": [
+          {
+            "id": "strings/4/1",
+            "title": "基础",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "strings/5",
+        "title": "最小表示法",
+        "children": [
+          {
+            "id": "strings/5/1",
+            "title": "基础",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "strings/6",
+        "title": "字典树",
+        "children": []
+      },
+      {
+        "id": "strings/7",
+        "title": "AC 自动机",
+        "children": [
+          {
+            "id": "strings/7/1",
+            "title": "基础",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "strings/8",
+        "title": "后缀数组 / 后缀自动机",
+        "children": [
+          {
+            "id": "strings/8/1",
+            "title": "基础",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "strings/9",
+        "title": "子序列自动机",
+        "children": [
+          {
+            "id": "strings/9/1",
+            "title": "基础",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "strings/10",
+        "title": "其他",
+        "children": [
+          {
+            "id": "strings/10/1",
+            "title": "进阶",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+]

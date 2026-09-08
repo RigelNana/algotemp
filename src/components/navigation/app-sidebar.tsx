@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import {
   BookOpen,
   Boxes,
@@ -12,6 +12,11 @@ import {
   X,
 } from "lucide-react";
 import { categories } from "@/algorithms/registry";
+import {
+  getTopicTrail,
+  isTopicWithin,
+  type CatalogTopic,
+} from "@/algorithms/catalog";
 import {
   Sidebar,
   SidebarContent,
@@ -47,56 +52,218 @@ const navigation = [
 
 function ActiveIndicator() {
   return (
-    <motion.span
-      layoutId="sidebar-active"
-      transition={motionTimings.layout}
-      className="sidebar-active pointer-events-none absolute inset-0 -z-10 rounded-md bg-sidebar-accent"
-    >
-      <span className="absolute inset-y-2 left-0 w-0.5 rounded-full bg-primary" />
-    </motion.span>
+    <span className="pointer-events-none absolute inset-y-2 left-0 w-0.5 rounded-full bg-primary" />
+  );
+}
+
+type Category = (typeof categories)[number];
+type Selection = { category?: string; algorithm?: string; topic?: string };
+
+function TreeToggle({
+  open,
+  label,
+  collapsed = false,
+}: {
+  open: boolean;
+  label: string;
+  collapsed?: boolean;
+}) {
+  const reducedMotion = useReducedMotion();
+  return (
+    <CollapsibleTrigger asChild>
+      <Button
+        variant="ghost"
+        size="icon"
+        disabled={collapsed}
+        className={cn(
+          "size-7 shrink-0",
+          collapsed && "pointer-events-none w-0 overflow-hidden opacity-0",
+        )}
+        aria-label={`${open ? "收起" : "展开"}：${label}`}
+      >
+        <motion.span
+          initial={false}
+          animate={{ rotate: open ? 90 : 0 }}
+          transition={reducedMotion ? { duration: 0 } : motionTimings.fast}
+        >
+          <ChevronRight className="size-3.5" />
+        </motion.span>
+      </Button>
+    </CollapsibleTrigger>
+  );
+}
+
+const treeLinkClass =
+  "relative block min-w-0 flex-1 truncate rounded-md px-2 py-1.5 text-[13px] text-muted-foreground outline-none transition-colors hover:bg-sidebar-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring";
+const treeChildrenClass =
+  "ml-3 min-w-0 space-y-0.5 border-l border-sidebar-border py-1 pl-2";
+
+function AlgorithmLinks({
+  category,
+  topicId,
+  selection,
+  closeMobile,
+}: {
+  category: Category;
+  topicId?: string;
+  selection: Selection;
+  closeMobile: () => void;
+}) {
+  return category.algorithms
+    .filter((algorithm) => algorithm.topicId === topicId)
+    .map((algorithm) => {
+      const active =
+        selection.category === category.slug &&
+        selection.algorithm === algorithm.slug;
+      return (
+        <li key={algorithm.id} className="min-w-0">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Link
+                activeOptions={{ exact: true }}
+                to="/algorithms/$category/$algorithm"
+                params={{ category: category.slug, algorithm: algorithm.slug }}
+                onClick={closeMobile}
+                aria-current={active ? "page" : false}
+                className={cn(
+                  treeLinkClass,
+                  active && "bg-sidebar-accent font-medium text-foreground",
+                )}
+              >
+                {algorithm.title}
+                {active && <ActiveIndicator />}
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent side="right">{algorithm.title}</TooltipContent>
+          </Tooltip>
+        </li>
+      );
+    });
+}
+
+function TopicTree({
+  category,
+  topic,
+  selection,
+  closeMobile,
+}: {
+  category: Category;
+  topic: CatalogTopic;
+  selection: Selection;
+  closeMobile: () => void;
+}) {
+  const selectedTopic =
+    selection.category === category.slug ? selection.topic : undefined;
+  const containsActive = isTopicWithin(selectedTopic, topic.id);
+  const active = selectedTopic === topic.id && !selection.algorithm;
+  const [open, setOpen] = useState(containsActive);
+  const hasChildren =
+    topic.children.length > 0 ||
+    category.algorithms.some((algorithm) => algorithm.topicId === topic.id);
+  const context = [
+    category.title,
+    ...getTopicTrail(category.slug, topic.id).map((item) => item.title),
+  ].join(" / ");
+  useEffect(() => {
+    if (containsActive) setOpen(true);
+  }, [containsActive, selectedTopic]);
+  return (
+    <Collapsible asChild open={open} onOpenChange={setOpen}>
+      <li className="min-w-0">
+        <div className="flex min-w-0 items-center gap-0.5">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Link
+                activeOptions={{ exact: true }}
+                to="/algorithms/$category"
+                params={{ category: category.slug }}
+                search={{ topic: topic.id }}
+                onClick={closeMobile}
+                aria-label={context}
+                aria-current={active ? "page" : false}
+                className={cn(
+                  treeLinkClass,
+                  active && "bg-sidebar-accent font-medium text-foreground",
+                )}
+              >
+                {topic.title}
+                {active && <ActiveIndicator />}
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent side="right" className="max-w-sm">
+              {context}
+            </TooltipContent>
+          </Tooltip>
+          {hasChildren && <TreeToggle open={open} label={context} />}
+        </div>
+        {hasChildren && open && (
+          <CollapsibleContent>
+            <ul className={treeChildrenClass}>
+              {topic.children.map((child) => (
+                <TopicTree
+                  key={child.id}
+                  category={category}
+                  topic={child}
+                  selection={selection}
+                  closeMobile={closeMobile}
+                />
+              ))}
+              <AlgorithmLinks
+                category={category}
+                topicId={topic.id}
+                selection={selection}
+                closeMobile={closeMobile}
+              />
+            </ul>
+          </CollapsibleContent>
+        )}
+      </li>
+    </Collapsible>
   );
 }
 
 function CategoryTree({
   category,
-  path,
+  selection,
   closeMobile,
 }: {
-  category: (typeof categories)[number];
-  path: string;
+  category: Category;
+  selection: Selection;
   closeMobile: () => void;
 }) {
   const { state, isMobile } = useSidebar();
   const collapsed = state === "collapsed" && !isMobile;
-  const activeCategory = path === `/algorithms/${category.slug}`;
-  const containsActive =
-    activeCategory ||
-    category.algorithms.some(
-      (algorithm) => path === `/algorithms/${category.slug}/${algorithm.slug}`,
-    );
+  const containsActive = selection.category === category.slug;
+  const activeCategory =
+    containsActive && !selection.topic && !selection.algorithm;
   const [open, setOpen] = useState(containsActive);
-  const reducedMotion = useReducedMotion();
+  const hasChildren =
+    category.topics.length > 0 || category.algorithms.length > 0;
   useEffect(() => {
     if (containsActive) setOpen(true);
-  }, [containsActive]);
+  }, [containsActive, selection.topic, selection.algorithm]);
 
   return (
     <Collapsible asChild open={open && !collapsed} onOpenChange={setOpen}>
       <SidebarMenuItem>
-        <div className="flex items-center gap-0.5">
+        <div className="flex min-w-0 items-center gap-0.5">
           <SidebarMenuButton
             asChild
-            tooltip={category.title}
+            tooltip={{ children: category.title, hidden: false }}
             isActive={activeCategory || (collapsed && containsActive)}
-            className="relative flex-1"
+            className="relative min-w-0 flex-1"
           >
             <Link
+              activeOptions={{ exact: true }}
               to="/algorithms/$category"
               params={{ category: category.slug }}
+              search={{}}
               onClick={closeMobile}
+              aria-label={category.title}
+              aria-current={activeCategory ? "page" : false}
             >
               <Folder />
-              <span className="shrink-0 whitespace-nowrap">
+              <span className="min-w-0 truncate whitespace-nowrap">
                 {category.title}
               </span>
               {(activeCategory || (collapsed && containsActive)) && (
@@ -104,76 +271,34 @@ function CategoryTree({
               )}
             </Link>
           </SidebarMenuButton>
-          <CollapsibleTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              disabled={collapsed}
-              className={cn(
-                "size-7 shrink-0 transition-[width,opacity] duration-200",
-                collapsed &&
-                  "pointer-events-none w-0 overflow-hidden opacity-0",
-              )}
-              aria-label={`${open ? "收起" : "展开"}${category.title}`}
-            >
-              <motion.span
-                animate={{ rotate: open ? 90 : 0 }}
-                transition={motionTimings.fast}
-              >
-                <ChevronRight className="size-3.5" />
-              </motion.span>
-            </Button>
-          </CollapsibleTrigger>
-        </div>
-        <AnimatePresence initial={false}>
-          {open && !collapsed && (
-            <CollapsibleContent forceMount asChild>
-              <motion.div
-                initial={{
-                  height: reducedMotion ? "auto" : 0,
-                  opacity: 0,
-                  y: reducedMotion ? 0 : -4,
-                }}
-                animate={{ height: "auto", opacity: 1, y: 0 }}
-                exit={{
-                  height: reducedMotion ? "auto" : 0,
-                  opacity: 0,
-                  y: reducedMotion ? 0 : -4,
-                }}
-                transition={motionTimings.normal}
-                className="overflow-hidden"
-              >
-                <ul className="ml-4 space-y-0.5 border-l border-sidebar-border py-1 pl-2">
-                  {category.algorithms.map((algorithm) => {
-                    const active =
-                      path === `/algorithms/${category.slug}/${algorithm.slug}`;
-                    return (
-                      <li key={algorithm.id}>
-                        <Link
-                          to="/algorithms/$category/$algorithm"
-                          params={{
-                            category: category.slug,
-                            algorithm: algorithm.slug,
-                          }}
-                          onClick={closeMobile}
-                          aria-current={active ? "page" : undefined}
-                          className={cn(
-                            "relative block truncate rounded-md px-3 py-1.5 text-[13px] text-muted-foreground outline-none transition-colors hover:bg-sidebar-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring",
-                            active &&
-                              "bg-sidebar-accent font-medium text-foreground",
-                          )}
-                        >
-                          {algorithm.title}
-                          {active && <ActiveIndicator />}
-                        </Link>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </motion.div>
-            </CollapsibleContent>
+          {hasChildren && (
+            <TreeToggle
+              open={open}
+              label={category.title}
+              collapsed={collapsed}
+            />
           )}
-        </AnimatePresence>
+        </div>
+        {hasChildren && open && !collapsed && (
+          <CollapsibleContent>
+            <ul className={treeChildrenClass}>
+              {category.topics.map((topic) => (
+                <TopicTree
+                  key={topic.id}
+                  category={category}
+                  topic={topic}
+                  selection={selection}
+                  closeMobile={closeMobile}
+                />
+              ))}
+              <AlgorithmLinks
+                category={category}
+                selection={selection}
+                closeMobile={closeMobile}
+              />
+            </ul>
+          </CollapsibleContent>
+        )}
       </SidebarMenuItem>
     </Collapsible>
   );
@@ -186,6 +311,19 @@ export function AppSidebar() {
     select: (router) => router.location.pathname,
   });
   const path = decodeURI(pathname).replace(/\/$/, "");
+  const params = useRouterState({
+    select: (router) => router.matches.at(-1)?.params,
+  }) as { category?: string; algorithm?: string } | undefined;
+  const search = useRouterState({
+    select: (router) => router.location.search,
+  }) as { topic?: string };
+  const currentAlgorithm = categories
+    .find((category) => category.slug === params?.category)
+    ?.algorithms.find((algorithm) => algorithm.slug === params?.algorithm);
+  const selection: Selection = {
+    ...params,
+    topic: params?.algorithm ? currentAlgorithm?.topicId : search.topic,
+  };
   const closeMobile = () => setOpenMobile(false);
 
   return (
@@ -197,6 +335,7 @@ export function AppSidebar() {
       <SidebarHeader className="shrink-0 px-3 pb-3 pt-0">
         <div className="relative h-[52px] overflow-hidden">
           <Link
+            activeOptions={{ exact: true }}
             to="/algorithms"
             onClick={closeMobile}
             tabIndex={collapsed ? -1 : undefined}
@@ -250,10 +389,11 @@ export function AppSidebar() {
                     className="relative h-9 text-[13px]"
                   >
                     <Link
+                      activeOptions={{ exact: true }}
                       to={to}
                       onClick={closeMobile}
                       aria-label={title}
-                      aria-current={active ? "page" : undefined}
+                      aria-current={active ? "page" : false}
                     >
                       <Icon
                         className="text-muted-foreground"
@@ -278,7 +418,7 @@ export function AppSidebar() {
                 <CategoryTree
                   key={category.slug}
                   category={category}
-                  path={path}
+                  selection={selection}
                   closeMobile={closeMobile}
                 />
               ))}

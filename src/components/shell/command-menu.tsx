@@ -9,12 +9,14 @@ import {
   type ReactNode,
 } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { AnimatePresence, motion } from "motion/react";
+import { defaultFilter } from "cmdk";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
   ArrowUpRight,
   BookOpen,
   Clock3,
   FileCode2,
+  Folder,
   Keyboard,
   Monitor,
   Moon,
@@ -33,7 +35,8 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { useSidebar } from "@/components/ui/sidebar";
-import { algorithms } from "@/algorithms/registry";
+import { algorithms, categories } from "@/algorithms/registry";
+import { catalogEntries, getTopicTrail } from "@/algorithms/catalog";
 import { usePreferences } from "@/stores/preferences";
 import { motionTimings } from "@/lib/motion";
 
@@ -48,24 +51,60 @@ export function useCommandMenu() {
   return context;
 }
 
-const searchEntries = algorithms.map((algorithm) => ({
-  algorithm,
-  keywords: [
-    algorithm.title,
-    algorithm.description ?? "",
-    algorithm.category,
-    algorithm.categoryLabel ?? "",
-    ...(algorithm.aliases ?? []),
-    ...algorithm.tags,
-    ...(algorithm.keywords ?? []),
-    ...algorithm.implementations.flatMap((implementation) => [
-      implementation.language,
-      implementation.label ?? "",
-    ]),
-    algorithm.complexity?.time ?? "",
-    algorithm.complexity?.space ?? "",
-  ],
+const directoryRoots = categories.map((category) => ({
+  id: `category:${category.slug}`,
+  category: category.slug,
+  title: category.title,
+  topic: undefined as string | undefined,
+  context: category.title,
+  keywords: [category.title, category.slug],
 }));
+const directoryEntries = [
+  ...directoryRoots,
+  ...catalogEntries.map(({ category, topic, trail }) => ({
+    id: `topic:${topic.id}`,
+    category: category.slug,
+    title: topic.title,
+    topic: topic.id,
+    context: [category.title, ...trail.map((item) => item.title)].join(" / "),
+    keywords: [
+      category.title,
+      category.slug,
+      ...trail.map((item) => item.title),
+    ],
+  })),
+];
+const searchEntries = algorithms.map((algorithm) => {
+  const category = categories.find((item) => item.slug === algorithm.category);
+  const context = [
+    category?.title ?? algorithm.categoryLabel ?? algorithm.category,
+    ...getTopicTrail(algorithm.category, algorithm.topicId ?? "").map(
+      (topic) => topic.title,
+    ),
+    algorithm.title,
+  ].join(" / ");
+  return {
+    algorithm,
+    context,
+    keywords: [
+      context,
+      algorithm.title,
+      algorithm.description ?? "",
+      algorithm.category,
+      algorithm.categoryLabel ?? "",
+      ...(algorithm.aliases ?? []),
+      ...algorithm.tags,
+      ...(algorithm.keywords ?? []),
+      ...algorithm.implementations.flatMap((implementation) => [
+        implementation.language,
+        implementation.label ?? "",
+      ]),
+      algorithm.complexity?.time ?? "",
+      algorithm.complexity?.space ?? "",
+    ],
+  };
+});
+const directoryResultLimit = 40;
 
 export function CommandMenuProvider({
   children,
@@ -82,6 +121,7 @@ export function CommandMenuProvider({
   const setTheme = usePreferences((state) => state.setTheme);
   const recent = usePreferences((state) => state.recentAlgorithms);
   const restoreFocus = useRef<HTMLElement | null>(null);
+  const reducedMotion = useReducedMotion();
 
   const openCommand = useCallback(
     (nextMode: CommandMode = "search") => {
@@ -144,6 +184,17 @@ export function CommandMenuProvider({
         : searchEntries,
     [mode, recent],
   );
+  const directoryMatches = useMemo(() => {
+    if (!query.trim()) return directoryRoots;
+    return directoryEntries
+      .map((entry) => ({
+        entry,
+        score: defaultFilter(entry.id, query, entry.keywords),
+      }))
+      .filter(({ score }) => score > 0)
+      .sort((a, b) => b.score - a.score)
+      .map(({ entry }) => entry);
+  }, [query]);
 
   const run = (action: () => void) => {
     setOpen(false);
@@ -159,7 +210,7 @@ export function CommandMenuProvider({
       ? "命令面板"
       : mode === "open"
         ? "快速打开"
-        : "搜索算法";
+        : "搜索目录与算法";
 
   return (
     <CommandMenuContext.Provider value={context}>
@@ -179,8 +230,8 @@ export function CommandMenuProvider({
               mode === "commands"
                 ? "输入命令…"
                 : mode === "open"
-                  ? "输入名称，快速打开算法…"
-                  : "搜索名称、标签、语言或复杂度…"
+                  ? "输入分类、专题或算法名称…"
+                  : "搜索目录、祖先分类、标签或算法…"
             }
             value={query}
             onValueChange={setQuery}
@@ -189,36 +240,76 @@ export function CommandMenuProvider({
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={mode}
-            initial={{ opacity: 0, y: 4 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -4 }}
-            transition={motionTimings.fast}
+            exit={reducedMotion ? undefined : { opacity: 0, y: -4 }}
+            transition={reducedMotion ? { duration: 0 } : motionTimings.fast}
           >
             <CommandList className="max-h-[min(400px,50dvh)] min-h-40">
               <CommandEmpty>
                 <div className="mx-auto flex max-w-80 flex-col items-center px-5 py-5">
                   <Search className="mb-3 size-5 text-muted-foreground" />
-                  <p>
-                    {mode !== "commands" && algorithms.length === 0
-                      ? "模板库还是空的"
-                      : "没有找到匹配结果"}
-                  </p>
+                  <p>没有找到匹配结果</p>
                   <p className="mt-2 text-xs leading-5 text-muted-foreground">
-                    {mode !== "commands" && algorithms.length === 0
-                      ? "添加真实算法模板后，即可在这里搜索和打开。"
-                      : "试试其他名称、标签或关键词。"}
+                    试试其他专题名称、上级分类或关键词。
                   </p>
                 </div>
               </CommandEmpty>
+              {mode !== "commands" && directoryMatches.length > 0 && (
+                <CommandGroup
+                  heading={
+                    query.trim()
+                      ? directoryMatches.length > directoryResultLimit
+                        ? `目录 · 最相关的 ${directoryResultLimit} 项`
+                        : "目录"
+                      : "专题目录"
+                  }
+                >
+                  {directoryMatches
+                    .slice(0, directoryResultLimit)
+                    .map((entry) => (
+                      <CommandItem
+                        key={entry.id}
+                        value={entry.id}
+                        keywords={entry.keywords}
+                        aria-label={entry.context}
+                        onSelect={() =>
+                          run(
+                            () =>
+                              void navigate({
+                                to: "/algorithms/$category",
+                                params: { category: entry.category },
+                                search: entry.topic
+                                  ? { topic: entry.topic }
+                                  : {},
+                              }),
+                          )
+                        }
+                      >
+                        <Folder />
+                        <div className="min-w-0 flex-1" title={entry.context}>
+                          <span className="block truncate">{entry.title}</span>
+                          {entry.topic && (
+                            <span className="block text-xs leading-5 text-muted-foreground">
+                              {entry.context}
+                            </span>
+                          )}
+                        </div>
+                        <ArrowUpRight className="size-3.5 shrink-0" />
+                      </CommandItem>
+                    ))}
+                </CommandGroup>
+              )}
               {mode !== "commands" && entries.length > 0 && (
                 <CommandGroup
                   heading={mode === "open" ? "算法 · 最近访问优先" : "算法"}
                 >
-                  {entries.map(({ algorithm, keywords }) => (
+                  {entries.map(({ algorithm, keywords, context }) => (
                     <CommandItem
                       key={algorithm.id}
                       value={algorithm.id}
                       keywords={keywords}
+                      aria-label={context}
                       onSelect={() =>
                         run(
                           () =>
@@ -233,12 +324,12 @@ export function CommandMenuProvider({
                       }
                     >
                       <FileCode2 />
-                      <div className="min-w-0 flex-1">
+                      <div className="min-w-0 flex-1" title={context}>
                         <span className="block truncate">
                           {algorithm.title}
                         </span>
                         <span className="block truncate text-xs text-muted-foreground">
-                          {algorithm.categoryLabel ?? algorithm.category}
+                          {context}
                           {algorithm.implementations.length
                             ? ` · ${algorithm.implementations.map((item) => item.label ?? item.language).join(", ")}`
                             : ""}

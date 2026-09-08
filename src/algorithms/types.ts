@@ -22,6 +22,7 @@ export type Algorithm = {
   slug: string;
   category: string;
   categoryLabel?: string;
+  topicId?: string;
   title: string;
   description?: string;
   aliases?: string[];
