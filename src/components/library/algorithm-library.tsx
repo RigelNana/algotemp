@@ -2,20 +2,17 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import {
   ArrowDownAZ,
-  ArrowLeft,
   ArrowUpRight,
-  ChevronRight,
   Clock3,
   FileCode2,
   Search,
   Star,
 } from "lucide-react";
 import {
+  catalogEntries,
   getTopic,
-  getTopicTrail,
   isTopicWithin,
   type CatalogCategory,
-  type CatalogTopic,
 } from "@/algorithms/catalog";
 import { algorithms, categories } from "@/algorithms/registry";
 import { usePreferences } from "@/stores/preferences";
@@ -51,24 +48,11 @@ const collectionDetails = {
   },
 } as const;
 
-function TopicPreview({ topics }: { topics: CatalogTopic[] }) {
-  if (!topics.length) return null;
-  return (
-    <p className="mt-1.5 text-xs leading-6 text-muted-foreground [overflow-wrap:anywhere]">
-      {topics
-        .slice(0, 3)
-        .map((topic) => topic.title)
-        .join(" · ")}
-      {topics.length > 3 && " 等专题"}
-    </p>
-  );
-}
-
 function SourceCredit({ source }: { source: CatalogCategory["source"] }) {
   if (!source) return null;
   return (
     <p className="text-xs leading-6 text-muted-foreground [overflow-wrap:anywhere]">
-      目录来源：{source.author} ·{" "}
+      标签来源：{source.author} ·{" "}
       <a
         href={source.url}
         target="_blank"
@@ -86,12 +70,7 @@ function SourceCredit({ source }: { source: CatalogCategory["source"] }) {
 }
 
 export function AlgorithmLibrary(props: LibraryProps) {
-  return (
-    <LibraryContent
-      key={`${props.collection}/${props.category ?? ""}/${props.topic ?? ""}`}
-      {...props}
-    />
-  );
+  return <LibraryContent key={props.collection} {...props} />;
 }
 
 function LibraryContent({ collection, category, topic }: LibraryProps) {
@@ -100,12 +79,42 @@ function LibraryContent({ collection, category, topic }: LibraryProps) {
   const toggleFavorite = usePreferences((state) => state.toggleFavorite);
   const [query, setQuery] = useState("");
   const [sorted, setSorted] = useState(false);
+  const [topicQuery, setTopicQuery] = useState("");
   const currentCategory = categories.find((item) => item.slug === category);
   const currentTopic =
     category && topic ? getTopic(category, topic) : undefined;
-  const trail = category && topic ? getTopicTrail(category, topic) : [];
-  const parentTopic = trail.at(-2);
-  const topics = currentTopic?.children ?? currentCategory?.topics ?? [];
+  const topicChoices = useMemo(() => {
+    const choices = catalogEntries.filter(
+      (entry) => entry.category.slug === category,
+    );
+    const titleCounts = new Map<string, number>();
+    for (const { topic: item } of choices)
+      titleCounts.set(item.title, (titleCounts.get(item.title) ?? 0) + 1);
+    return choices.map(({ topic: item, trail }) => ({
+      id: item.id,
+      title:
+        (titleCounts.get(item.title) ?? 0) > 1
+          ? trail.map((part) => part.title).join(" · ")
+          : item.title,
+      context: trail.map((part) => part.title).join(" · "),
+    }));
+  }, [category]);
+  const visibleTopics = useMemo(() => {
+    const normalized = topicQuery.trim().toLocaleLowerCase();
+    return topicChoices.filter(
+      (item) =>
+        item.id === currentTopic?.id ||
+        item.context.toLocaleLowerCase().includes(normalized),
+    );
+  }, [topicChoices, topicQuery, currentTopic?.id]);
+  const clearQueries = () => {
+    setQuery("");
+    setTopicQuery("");
+  };
+  useEffect(() => {
+    setQuery("");
+    setTopicQuery("");
+  }, [category]);
   const details =
     collection === "library" ? undefined : collectionDetails[collection];
   const title =
@@ -159,112 +168,155 @@ function LibraryContent({ collection, category, topic }: LibraryProps) {
       <h1 className="sr-only">{title}</h1>
       <ScrollArea className="min-h-0 min-w-0 flex-1 [&_[data-slot=scroll-area-viewport]>div]:!block">
         <div className="mx-auto w-full max-w-[1400px] px-4 py-5 sm:px-6 md:px-9">
-          {collection === "library" && !currentCategory && (
-            <section aria-label="算法专题目录">
-              <p className="mb-5 text-xs leading-6 text-muted-foreground">
-                专题目录整理自灵茶山艾府（0x3F）题单。目录与算法实现分开维护。
-              </p>
-              <ul className="border-t">
+          {collection === "library" && (
+            <section aria-label="标签筛选" className="space-y-5">
+              <div
+                className="flex min-w-0 flex-wrap gap-2"
+                role="group"
+                aria-label="分类标签"
+              >
+                <Button
+                  variant={!currentCategory ? "default" : "outline"}
+                  size="sm"
+                  className="shadow-none"
+                  asChild
+                >
+                  <Link
+                    activeOptions={{ exact: true }}
+                    to="/algorithms"
+                    search={{}}
+                    resetScroll={false}
+                    aria-current={!currentCategory ? "true" : undefined}
+                    onClick={clearQueries}
+                  >
+                    全部
+                  </Link>
+                </Button>
                 {categories.map((item) => (
-                  <li
+                  <Button
                     key={item.slug}
-                    className="border-b border-border/70 py-1"
+                    variant={category === item.slug ? "default" : "outline"}
+                    size="sm"
+                    className="h-auto min-h-8 max-w-full whitespace-normal py-1.5 text-left leading-5 shadow-none [overflow-wrap:anywhere]"
+                    asChild
                   >
                     <Link
                       to="/algorithms/$category"
                       params={{ category: item.slug }}
                       search={{}}
-                      className="group -mx-2 flex min-w-0 items-start gap-3 rounded-md px-2 py-3 transition-colors hover:bg-accent/50 focus-visible:outline-2 focus-visible:outline-ring"
+                      resetScroll={false}
+                      aria-current={category === item.slug ? "true" : undefined}
+                      onClick={clearQueries}
                     >
-                      <div className="min-w-0 flex-1">
-                        <span className="text-sm font-medium leading-6 transition-colors group-hover:text-primary [overflow-wrap:anywhere]">
-                          {item.title}
-                        </span>
-                        <TopicPreview topics={item.topics} />
-                      </div>
-                      <ChevronRight
-                        className="mt-1 size-4 shrink-0 text-muted-foreground"
-                        aria-hidden="true"
-                      />
+                      {item.title}
                     </Link>
-                    {item.source && (
-                      <a
-                        href={item.source.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={`查看${item.source.author}的${item.source.title}`}
-                        className="mb-2 inline-flex items-center gap-1 rounded-sm text-xs leading-6 text-muted-foreground underline decoration-border underline-offset-4 transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring"
-                      >
-                        原始题单
-                        <ArrowUpRight className="size-3" aria-hidden="true" />
-                      </a>
-                    )}
-                  </li>
+                  </Button>
                 ))}
-              </ul>
-            </section>
-          )}
-
-          {collection === "library" && currentCategory && (
-            <section aria-label="当前专题目录">
-              {currentTopic && (
-                <Link
-                  to="/algorithms/$category"
-                  params={{ category: currentCategory.slug }}
-                  search={parentTopic ? { topic: parentTopic.id } : {}}
-                  className="mb-5 inline-flex max-w-full items-start gap-2 rounded-sm text-xs leading-6 text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring"
-                >
-                  <ArrowLeft
-                    className="mt-1 size-3.5 shrink-0"
-                    aria-hidden="true"
-                  />
-                  <span className="min-w-0 [overflow-wrap:anywhere]">
-                    上一级：{parentTopic?.title ?? currentCategory.title}
-                  </span>
-                </Link>
-              )}
-              {topics.length > 0 && (
-                <ul className="border-t">
-                  {topics.map((item) => (
-                    <li key={item.id} className="border-b border-border/70">
+              </div>
+              {currentCategory && (
+                <div className="min-w-0 space-y-3 border-t pt-4">
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+                    <span className="text-xs font-medium" id="topic-tags-label">
+                      专题标签
+                    </span>
+                    <Button
+                      variant={!currentTopic ? "secondary" : "ghost"}
+                      size="xs"
+                      asChild
+                    >
                       <Link
+                        activeOptions={{ exact: true }}
                         to="/algorithms/$category"
                         params={{ category: currentCategory.slug }}
-                        search={{ topic: item.id }}
-                        className="group -mx-2 flex min-w-0 items-start gap-3 rounded-md px-2 py-4 transition-colors hover:bg-accent/50 focus-visible:outline-2 focus-visible:outline-ring"
+                        search={{}}
+                        resetScroll={false}
+                        aria-current={!currentTopic ? "true" : undefined}
+                        onClick={() => setTopicQuery("")}
                       >
-                        <div className="min-w-0 flex-1">
-                          <span className="text-sm font-medium leading-6 transition-colors group-hover:text-primary [overflow-wrap:anywhere]">
-                            {item.title}
-                          </span>
-                          <TopicPreview topics={item.children} />
-                        </div>
-                        <ChevronRight
-                          className="mt-1 size-4 shrink-0 text-muted-foreground"
-                          aria-hidden="true"
-                        />
+                        全部专题
                       </Link>
-                    </li>
-                  ))}
-                </ul>
+                    </Button>
+                    {topicChoices.length > 20 && (
+                      <div className="flex w-full min-w-0 items-center gap-2 sm:ml-auto sm:w-auto">
+                        <label
+                          htmlFor="topic-tag-filter"
+                          className="shrink-0 text-xs text-muted-foreground"
+                        >
+                          筛选标签
+                        </label>
+                        <Input
+                          id="topic-tag-filter"
+                          value={topicQuery}
+                          onChange={(event) =>
+                            setTopicQuery(event.target.value)
+                          }
+                          placeholder="标签关键词"
+                          className="h-8 min-w-0 flex-1 shadow-none sm:w-44"
+                        />
+                      </div>
+                    )}
+                  </div>
+                  <div
+                    role="group"
+                    aria-labelledby="topic-tags-label"
+                    className="flex max-h-64 min-w-0 flex-wrap content-start gap-1.5 overflow-y-auto overscroll-contain p-1"
+                  >
+                    {visibleTopics.map((item) => (
+                      <Button
+                        key={item.id}
+                        variant={
+                          currentTopic?.id === item.id ? "default" : "secondary"
+                        }
+                        size="sm"
+                        className="h-auto min-h-8 max-w-full whitespace-normal py-1.5 text-left text-xs leading-5 shadow-none [overflow-wrap:anywhere]"
+                        asChild
+                      >
+                        <Link
+                          to="/algorithms/$category"
+                          params={{ category: currentCategory.slug }}
+                          search={{ topic: item.id }}
+                          resetScroll={false}
+                          aria-current={
+                            currentTopic?.id === item.id ? "true" : undefined
+                          }
+                          aria-label={item.context}
+                          title={item.context}
+                        >
+                          {item.title}
+                        </Link>
+                      </Button>
+                    ))}
+                    {visibleTopics.length === 0 && (
+                      <p
+                        className="py-2 text-xs text-muted-foreground"
+                        role="status"
+                      >
+                        没有匹配的标签，请换个关键词。
+                      </p>
+                    )}
+                  </div>
+                  <SourceCredit source={currentCategory.source} />
+                </div>
+              )}
+              {!currentCategory && (
+                <p className="text-xs leading-6 text-muted-foreground">
+                  专题标签整理自灵茶山艾府（0x3F）题单，选择分类标签可筛选全部专题。
+                </p>
               )}
               {entries.length === 0 && (
-                <div className={topics.length ? "pt-6" : "py-8"}>
+                <div className="border-t py-6">
                   <h2 className="text-sm font-medium leading-6">
-                    {topics.length
-                      ? "此目录下暂无算法实现"
-                      : "此专题尚无算法实现"}
+                    {currentCategory
+                      ? "这些标签下暂无代码模板"
+                      : "尚未收录代码模板"}
                   </h2>
                   <p className="mt-1 max-w-prose text-sm leading-7 text-muted-foreground">
-                    {topics.length
-                      ? "可以继续浏览子专题，或前往原始题单查看题目。"
-                      : "这里只收录了专题目录，尚未登记代码模板。可返回上一级，或前往原始题单查看题目。"}
+                    {currentCategory
+                      ? "标签用于筛选算法实现。可以更换或清除标签，也可以查看原始题单。"
+                      : "目前提供专题标签与原始题单索引，算法实现尚未登记。"}
                   </p>
                 </div>
               )}
-              <div className="mt-5">
-                <SourceCredit source={currentCategory.source} />
-              </div>
             </section>
           )}
 
@@ -336,7 +388,7 @@ function LibraryContent({ collection, category, topic }: LibraryProps) {
                 <>
                   <div className="grid grid-cols-[1fr_auto] items-center border-b py-3 text-xs text-muted-foreground md:grid-cols-[minmax(0,1fr)_160px_130px_36px]">
                     <span>算法名称</span>
-                    <span className="hidden md:block">分类</span>
+                    <span className="hidden md:block">分类标签</span>
                     <span className="hidden md:block">代码语言</span>
                     <span className="sr-only">收藏</span>
                   </div>

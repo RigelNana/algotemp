@@ -16,7 +16,7 @@ import {
   BookOpen,
   Clock3,
   FileCode2,
-  Folder,
+  Tag,
   Keyboard,
   Monitor,
   Moon,
@@ -51,7 +51,7 @@ export function useCommandMenu() {
   return context;
 }
 
-const directoryRoots = categories.map((category) => ({
+const categoryTags = categories.map((category) => ({
   id: `category:${category.slug}`,
   category: category.slug,
   title: category.title,
@@ -59,14 +59,14 @@ const directoryRoots = categories.map((category) => ({
   context: category.title,
   keywords: [category.title, category.slug],
 }));
-const directoryEntries = [
-  ...directoryRoots,
+const tagEntries = [
+  ...categoryTags,
   ...catalogEntries.map(({ category, topic, trail }) => ({
     id: `topic:${topic.id}`,
     category: category.slug,
     title: topic.title,
     topic: topic.id,
-    context: [category.title, ...trail.map((item) => item.title)].join(" / "),
+    context: [category.title, ...trail.map((item) => item.title)].join(" · "),
     keywords: [
       category.title,
       category.slug,
@@ -104,7 +104,7 @@ const searchEntries = algorithms.map((algorithm) => {
     ],
   };
 });
-const directoryResultLimit = 40;
+const tagResultLimit = 40;
 
 export function CommandMenuProvider({
   children,
@@ -184,9 +184,9 @@ export function CommandMenuProvider({
         : searchEntries,
     [mode, recent],
   );
-  const directoryMatches = useMemo(() => {
-    if (!query.trim()) return directoryRoots;
-    return directoryEntries
+  const tagMatches = useMemo(() => {
+    if (!query.trim()) return categoryTags;
+    return tagEntries
       .map((entry) => ({
         entry,
         score: defaultFilter(entry.id, query, entry.keywords),
@@ -210,7 +210,7 @@ export function CommandMenuProvider({
       ? "命令面板"
       : mode === "open"
         ? "快速打开"
-        : "搜索目录与算法";
+        : "搜索标签与算法";
 
   return (
     <CommandMenuContext.Provider value={context}>
@@ -230,8 +230,8 @@ export function CommandMenuProvider({
               mode === "commands"
                 ? "输入命令…"
                 : mode === "open"
-                  ? "输入分类、专题或算法名称…"
-                  : "搜索目录、祖先分类、标签或算法…"
+                  ? "输入标签或算法名称…"
+                  : "搜索标签、算法或关键词…"
             }
             value={query}
             onValueChange={setQuery}
@@ -251,53 +251,51 @@ export function CommandMenuProvider({
                   <Search className="mb-3 size-5 text-muted-foreground" />
                   <p>没有找到匹配结果</p>
                   <p className="mt-2 text-xs leading-5 text-muted-foreground">
-                    试试其他专题名称、上级分类或关键词。
+                    试试其他标签名称或关键词。
                   </p>
                 </div>
               </CommandEmpty>
-              {mode !== "commands" && directoryMatches.length > 0 && (
+              {mode !== "commands" && tagMatches.length > 0 && (
                 <CommandGroup
                   heading={
                     query.trim()
-                      ? directoryMatches.length > directoryResultLimit
-                        ? `目录 · 最相关的 ${directoryResultLimit} 项`
-                        : "目录"
-                      : "专题目录"
+                      ? tagMatches.length > tagResultLimit
+                        ? `标签 · 最相关的 ${tagResultLimit} 项`
+                        : "标签"
+                      : "分类标签"
                   }
                 >
-                  {directoryMatches
-                    .slice(0, directoryResultLimit)
-                    .map((entry) => (
-                      <CommandItem
-                        key={entry.id}
-                        value={entry.id}
-                        keywords={entry.keywords}
-                        aria-label={entry.context}
-                        onSelect={() =>
-                          run(
-                            () =>
-                              void navigate({
-                                to: "/algorithms/$category",
-                                params: { category: entry.category },
-                                search: entry.topic
-                                  ? { topic: entry.topic }
-                                  : {},
-                              }),
-                          )
-                        }
-                      >
-                        <Folder />
-                        <div className="min-w-0 flex-1" title={entry.context}>
-                          <span className="block truncate">{entry.title}</span>
-                          {entry.topic && (
-                            <span className="block text-xs leading-5 text-muted-foreground">
-                              {entry.context}
-                            </span>
-                          )}
-                        </div>
-                        <ArrowUpRight className="size-3.5 shrink-0" />
-                      </CommandItem>
-                    ))}
+                  {tagMatches.slice(0, tagResultLimit).map((entry) => (
+                    <CommandItem
+                      key={entry.id}
+                      value={entry.id}
+                      keywords={entry.keywords}
+                      aria-label={entry.context}
+                      onSelect={() =>
+                        run(
+                          () =>
+                            void navigate({
+                              to: "/algorithms/$category",
+                              params: { category: entry.category },
+                              search: entry.topic ? { topic: entry.topic } : {},
+                            }),
+                        )
+                      }
+                    >
+                      <Tag />
+                      <div className="min-w-0 flex-1" title={entry.context}>
+                        <span className="block [overflow-wrap:anywhere]">
+                          {entry.title}
+                        </span>
+                        {entry.topic && (
+                          <span className="block text-xs leading-5 text-muted-foreground [overflow-wrap:anywhere]">
+                            {entry.context}
+                          </span>
+                        )}
+                      </div>
+                      <ArrowUpRight className="size-3.5 shrink-0" />
+                    </CommandItem>
+                  ))}
                 </CommandGroup>
               )}
               {mode !== "commands" && entries.length > 0 && (
@@ -346,7 +344,10 @@ export function CommandMenuProvider({
                     <CommandItem
                       value="模板库 library"
                       onSelect={() =>
-                        run(() => void navigate({ to: "/algorithms" }))
+                        run(
+                          () =>
+                            void navigate({ to: "/algorithms", search: {} }),
+                        )
                       }
                     >
                       <BookOpen />

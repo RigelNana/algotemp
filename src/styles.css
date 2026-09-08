@@ -204,6 +204,39 @@
   }
 }
 
+@keyframes sheet-enter {
+  from {
+    transform: translate3d(var(--sheet-x, 0), var(--sheet-y, 0), 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes sheet-exit {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(var(--sheet-x, 0), var(--sheet-y, 0), 0);
+  }
+}
+@keyframes sheet-overlay-enter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes sheet-overlay-exit {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

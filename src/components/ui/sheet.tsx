@@ -33,7 +33,7 @@ function SheetOverlay({
     <SheetPrimitive.Overlay
       data-slot="sheet-overlay"
       className={cn(
-        "fixed inset-0 z-50 bg-black/40 duration-200 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0",
+        "fixed inset-0 z-50 bg-black/40 will-change-opacity data-[state=open]:animate-[sheet-overlay-enter_180ms_ease-out_both] data-[state=closed]:animate-[sheet-overlay-exit_160ms_ease-in_both] motion-reduce:animate-none",
         className,
       )}
       {...props}
@@ -57,15 +57,14 @@ function SheetContent({
       <SheetPrimitive.Content
         data-slot="sheet-content"
         className={cn(
-          "fixed z-50 flex flex-col gap-4 bg-background shadow-lg will-change-transform ease-out data-[state=closed]:animate-out data-[state=closed]:duration-200 data-[state=open]:animate-in data-[state=open]:duration-250",
+          "fixed z-50 flex transform-gpu flex-col gap-4 bg-background shadow-none will-change-transform data-[state=open]:animate-[sheet-enter_200ms_cubic-bezier(0.22,1,0.36,1)_both] data-[state=closed]:animate-[sheet-exit_160ms_ease-in_both] motion-reduce:animate-none md:shadow-lg",
           side === "right" &&
-            "inset-y-0 right-0 h-full w-3/4 border-l data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right sm:max-w-sm",
+            "inset-y-0 right-0 h-full w-3/4 border-l [--sheet-x:100%] sm:max-w-sm",
           side === "left" &&
-            "inset-y-0 left-0 h-full w-3/4 border-r data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left sm:max-w-sm",
-          side === "top" &&
-            "inset-x-0 top-0 h-auto border-b data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top",
+            "inset-y-0 left-0 h-full w-3/4 border-r [--sheet-x:-100%] sm:max-w-sm",
+          side === "top" && "inset-x-0 top-0 h-auto border-b [--sheet-y:-100%]",
           side === "bottom" &&
-            "inset-x-0 bottom-0 h-auto border-t data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom",
+            "inset-x-0 bottom-0 h-auto border-t [--sheet-y:100%]",
           className,
         )}
         {...props}
