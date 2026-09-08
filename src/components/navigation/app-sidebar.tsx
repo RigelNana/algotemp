@@ -39,7 +39,6 @@ import {
 } from "@/components/ui/tooltip";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
 import { useCommandMenu } from "@/components/shell/command-menu";
-import { modifierKey } from "@/lib/keyboard";
 import { motionTimings } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
@@ -222,9 +221,7 @@ export function AppSidebar({ openSettings }: { openSettings: () => void }) {
               <TooltipTrigger asChild>
                 <SidebarTrigger aria-label="展开侧边栏" />
               </TooltipTrigger>
-              <TooltipContent side="right">
-                展开侧边栏 <kbd>{modifierKey} B</kbd>
-              </TooltipContent>
+              <TooltipContent side="right">展开侧边栏</TooltipContent>
             </Tooltip>
           ) : (
             <>
@@ -254,9 +251,7 @@ export function AppSidebar({ openSettings }: { openSettings: () => void }) {
                       className="text-muted-foreground"
                     />
                   </TooltipTrigger>
-                  <TooltipContent side="right">
-                    收起侧边栏 <kbd>{modifierKey} B</kbd>
-                  </TooltipContent>
+                  <TooltipContent side="right">收起侧边栏</TooltipContent>
                 </Tooltip>
               )}
             </>
@@ -267,26 +262,12 @@ export function AppSidebar({ openSettings }: { openSettings: () => void }) {
             <button
               onClick={() => openCommand("search")}
               aria-label="搜索算法"
-              className={cn(
-                "flex h-8 w-full items-center gap-2 rounded-md border border-sidebar-border bg-background px-2 text-xs text-muted-foreground outline-none transition-colors hover:border-muted-foreground/40 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring",
-                collapsed &&
-                  "justify-center border-transparent bg-transparent px-0",
-              )}
+              className="flex size-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-sidebar-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
             >
               <Search className="size-3.5 shrink-0" />
-              {!collapsed && (
-                <>
-                  <span className="flex-1 text-left">搜索算法…</span>
-                  <kbd className="rounded border px-1 font-mono text-[10px]">
-                    {modifierKey} K
-                  </kbd>
-                </>
-              )}
             </button>
           </TooltipTrigger>
-          <TooltipContent side="right" hidden={!collapsed}>
-            搜索算法 <kbd>{modifierKey} K</kbd>
-          </TooltipContent>
+          <TooltipContent side="right">搜索</TooltipContent>
         </Tooltip>
       </SidebarHeader>
       <SidebarContent className="gap-3">
@@ -343,9 +324,6 @@ export function AppSidebar({ openSettings }: { openSettings: () => void }) {
           collapsed ? "items-center" : "flex-row items-center justify-between",
         )}
       >
-        {!collapsed && (
-          <span className="mr-auto text-xs text-muted-foreground">工作区</span>
-        )}
         <ThemeToggle compact />
         <Tooltip>
           <TooltipTrigger asChild>

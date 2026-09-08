@@ -1,19 +1,11 @@
 import { Monitor, Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { usePreferences, type Theme } from "@/stores/preferences";
+import { usePreferences } from "@/stores/preferences";
 
 const themes = [
   { value: "light", label: "浅色", icon: Sun },
@@ -24,44 +16,27 @@ const themes = [
 export function ThemeToggle({ compact = true }: { compact?: boolean }) {
   const theme = usePreferences((state) => state.theme);
   const setTheme = usePreferences((state) => state.setTheme);
-  const selected = themes.find((option) => option.value === theme) ?? themes[2];
+  const index = themes.findIndex((option) => option.value === theme);
+  const selected = themes[index] ?? themes[2];
+  const next = themes[(index + 1) % themes.length];
   const Icon = selected.icon;
   return (
-    <DropdownMenu>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              size={compact ? "icon" : "sm"}
-              className={
-                compact
-                  ? "size-8 text-muted-foreground"
-                  : "justify-start text-muted-foreground"
-              }
-              aria-label={`切换主题，当前${selected.label}`}
-            >
-              <Icon className="size-4" />
-              {!compact && <span>{selected.label}</span>}
-            </Button>
-          </DropdownMenuTrigger>
-        </TooltipTrigger>
-        <TooltipContent>切换主题</TooltipContent>
-      </Tooltip>
-      <DropdownMenuContent align="end" className="w-40">
-        <DropdownMenuLabel>外观</DropdownMenuLabel>
-        <DropdownMenuRadioGroup
-          value={theme}
-          onValueChange={(value) => setTheme(value as Theme)}
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Button
+          variant="ghost"
+          size={compact ? "icon" : "sm"}
+          className={
+            compact ? "size-8 text-muted-foreground" : "text-muted-foreground"
+          }
+          aria-label={`当前${selected.label}，切换为${next.label}`}
+          onClick={() => setTheme(next.value)}
         >
-          {themes.map(({ value, label, icon: ThemeIcon }) => (
-            <DropdownMenuRadioItem key={value} value={value}>
-              <ThemeIcon className="size-4 text-muted-foreground" />
-              {label}
-            </DropdownMenuRadioItem>
-          ))}
-        </DropdownMenuRadioGroup>
-      </DropdownMenuContent>
-    </DropdownMenu>
+          <Icon className="size-4" />
+          {!compact && selected.label}
+        </Button>
+      </TooltipTrigger>
+      <TooltipContent>切换为{next.label}</TooltipContent>
+    </Tooltip>
   );
 }

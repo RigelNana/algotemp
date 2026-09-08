@@ -4,18 +4,14 @@ import { motion, useReducedMotion } from "motion/react";
 import {
   ArrowDownAZ,
   ArrowUpRight,
-  Braces,
   Clock3,
   FileCode2,
   Files,
-  PanelLeft,
   Search,
   Star,
 } from "lucide-react";
 import { algorithms, categories } from "@/algorithms/registry";
 import { usePreferences } from "@/stores/preferences";
-import { useCommandMenu } from "@/components/shell/command-menu";
-import { useSidebar } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -25,7 +21,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { EmptyState } from "@/components/shared/empty-state";
-import { modifierKey } from "@/lib/keyboard";
 import { motionTimings } from "@/lib/motion";
 import { toast } from "sonner";
 
@@ -33,21 +28,18 @@ type Collection = "library" | "favorites" | "recent";
 const collectionDetails = {
   library: {
     title: "模板库",
-    description: "算法说明与代码，在同一个工作区。",
     icon: Files,
     emptyTitle: "模板库还是空的",
     emptyDescription: "添加真实算法后，分类、检索与代码工作台会自动就绪。",
   },
   favorites: {
     title: "收藏",
-    description: "常用的算法模板，随时取用。",
     icon: Star,
     emptyTitle: "还没有收藏",
     emptyDescription: "在算法页面点击星标，将常用模板收在这里。",
   },
   recent: {
     title: "最近访问",
-    description: "从上一次阅读的地方继续。",
     icon: Clock3,
     emptyTitle: "还没有访问记录",
     emptyDescription: "打开过的算法会自动出现在这里，最近访问的排在最前。",
@@ -64,8 +56,6 @@ export function AlgorithmLibrary({
   const favorites = usePreferences((state) => state.favorites);
   const recent = usePreferences((state) => state.recentAlgorithms);
   const toggleFavorite = usePreferences((state) => state.toggleFavorite);
-  const { openCommand } = useCommandMenu();
-  const { toggleSidebar } = useSidebar();
   const reducedMotion = useReducedMotion();
   const [query, setQuery] = useState("");
   const [sorted, setSorted] = useState(false);
@@ -123,30 +113,7 @@ export function AlgorithmLibrary({
       transition={motionTimings.normal}
       className="flex h-full min-h-0 flex-col"
     >
-      <div className="flex shrink-0 flex-wrap items-start justify-between gap-4 border-b px-6 py-7 md:px-9">
-        <div>
-          <h1 className="text-[23px] leading-8 font-semibold tracking-[-0.025em]">
-            {title}
-          </h1>
-          <p className="mt-1.5 text-[13px] leading-6 text-muted-foreground">
-            {currentCategory
-              ? `${currentCategory.title}分类下的算法说明与实现。`
-              : details.description}
-          </p>
-        </div>
-        <Button
-          variant="outline"
-          size="sm"
-          className="mt-1 gap-2 bg-background shadow-none"
-          onClick={() => openCommand("search")}
-        >
-          <Search className="size-3.5" />
-          搜索模板
-          <kbd className="ml-2 hidden text-muted-foreground sm:inline">
-            {modifierKey} K
-          </kbd>
-        </Button>
-      </div>
+      <h1 className="sr-only">{title}</h1>
       {entries.length > 0 && (
         <div className="flex shrink-0 items-center gap-3 border-b px-6 py-3 md:px-9">
           <div className="relative max-w-sm flex-1">
@@ -203,38 +170,6 @@ export function AlgorithmLibrary({
                 </Button>
               )}
             </EmptyState>
-            <div className="w-full max-w-[310px] border-t pt-5">
-              {[
-                {
-                  label: "搜索算法模板",
-                  keys: `${modifierKey} K`,
-                  icon: Search,
-                  action: () => openCommand("search"),
-                },
-                {
-                  label: "快速打开",
-                  keys: `${modifierKey} P`,
-                  icon: Braces,
-                  action: () => openCommand("open"),
-                },
-                {
-                  label: "切换侧边栏",
-                  keys: `${modifierKey} B`,
-                  icon: PanelLeft,
-                  action: toggleSidebar,
-                },
-              ].map(({ label, keys, icon: Icon, action }) => (
-                <button
-                  key={label}
-                  onClick={action}
-                  className="flex min-h-10 w-full items-center gap-3 rounded-md px-2 text-left text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                >
-                  <Icon className="size-3.5" />
-                  <span className="flex-1">{label}</span>
-                  <kbd className="shortcut-key">{keys}</kbd>
-                </button>
-              ))}
-            </div>
           </div>
         ) : filtered.length === 0 ? (
           <EmptyState
@@ -330,18 +265,6 @@ export function AlgorithmLibrary({
           </div>
         )}
       </ScrollArea>
-      <div className="flex h-9 shrink-0 items-center justify-between gap-3 border-t px-6 text-[11px] text-muted-foreground md:px-9">
-        <span className="flex items-center gap-1.5">
-          <Braces className="size-3.5" />
-          本地工作区
-        </span>
-        <button
-          className="hidden items-center gap-2 rounded-sm hover:text-foreground sm:flex"
-          onClick={() => openCommand("commands")}
-        >
-          命令面板<kbd>{modifierKey} Shift P</kbd>
-        </button>
-      </div>
     </motion.div>
   );
 }

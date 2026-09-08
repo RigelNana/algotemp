@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as FavoritesRouteImport } from './routes/favorites'
 import { Route as RecentRouteImport } from './routes/recent'
+import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as AlgorithmsIndexRouteImport } from './routes/algorithms/index'
 import { Route as AlgorithmsCategoryIndexRouteImport } from './routes/algorithms/$category/index'
 import { Route as AlgorithmsCategoryAlgorithmRouteImport } from './routes/algorithms/$category/$algorithm'
@@ -29,6 +30,11 @@ const FavoritesRoute = FavoritesRouteImport.update({
 const RecentRoute = RecentRouteImport.update({
   id: '/recent',
   path: '/recent',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AlgorithmsIndexRoute = AlgorithmsIndexRouteImport.update({
@@ -52,6 +58,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/favorites': typeof FavoritesRoute
   '/recent': typeof RecentRoute
+  '/settings': typeof SettingsRoute
   '/algorithms/': typeof AlgorithmsIndexRoute
   '/algorithms/$category/$algorithm': typeof AlgorithmsCategoryAlgorithmRoute
   '/algorithms/$category/': typeof AlgorithmsCategoryIndexRoute
@@ -60,6 +67,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/favorites': typeof FavoritesRoute
   '/recent': typeof RecentRoute
+  '/settings': typeof SettingsRoute
   '/algorithms': typeof AlgorithmsIndexRoute
   '/algorithms/$category/$algorithm': typeof AlgorithmsCategoryAlgorithmRoute
   '/algorithms/$category': typeof AlgorithmsCategoryIndexRoute
@@ -69,6 +77,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/favorites': typeof FavoritesRoute
   '/recent': typeof RecentRoute
+  '/settings': typeof SettingsRoute
   '/algorithms/': typeof AlgorithmsIndexRoute
   '/algorithms/$category/$algorithm': typeof AlgorithmsCategoryAlgorithmRoute
   '/algorithms/$category/': typeof AlgorithmsCategoryIndexRoute
@@ -79,6 +88,7 @@ export interface FileRouteTypes {
     | '/'
     | '/favorites'
     | '/recent'
+    | '/settings'
     | '/algorithms/'
     | '/algorithms/$category/$algorithm'
     | '/algorithms/$category/'
@@ -87,6 +97,7 @@ export interface FileRouteTypes {
     | '/'
     | '/favorites'
     | '/recent'
+    | '/settings'
     | '/algorithms'
     | '/algorithms/$category/$algorithm'
     | '/algorithms/$category'
@@ -95,6 +106,7 @@ export interface FileRouteTypes {
     | '/'
     | '/favorites'
     | '/recent'
+    | '/settings'
     | '/algorithms/'
     | '/algorithms/$category/$algorithm'
     | '/algorithms/$category/'
@@ -104,6 +116,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   FavoritesRoute: typeof FavoritesRoute
   RecentRoute: typeof RecentRoute
+  SettingsRoute: typeof SettingsRoute
   AlgorithmsIndexRoute: typeof AlgorithmsIndexRoute
   AlgorithmsCategoryAlgorithmRoute: typeof AlgorithmsCategoryAlgorithmRoute
   AlgorithmsCategoryIndexRoute: typeof AlgorithmsCategoryIndexRoute
@@ -130,6 +143,13 @@ declare module '@tanstack/react-router' {
       path: '/recent'
       fullPath: '/recent'
       preLoaderRoute: typeof RecentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/algorithms/': {
@@ -160,6 +180,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   FavoritesRoute: FavoritesRoute,
   RecentRoute: RecentRoute,
+  SettingsRoute: SettingsRoute,
   AlgorithmsIndexRoute: AlgorithmsIndexRoute,
   AlgorithmsCategoryAlgorithmRoute: AlgorithmsCategoryAlgorithmRoute,
   AlgorithmsCategoryIndexRoute: AlgorithmsCategoryIndexRoute,

@@ -31,12 +31,10 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-  CommandShortcut,
 } from "@/components/ui/command";
 import { useSidebar } from "@/components/ui/sidebar";
 import { algorithms } from "@/algorithms/registry";
 import { usePreferences } from "@/stores/preferences";
-import { modifierKey } from "@/lib/keyboard";
 import { motionTimings } from "@/lib/motion";
 
 export type CommandMode = "search" | "open" | "commands";
@@ -289,7 +287,6 @@ export function CommandMenuProvider({
                     >
                       <PanelLeft />
                       切换侧边栏
-                      <CommandShortcut>{modifierKey} B</CommandShortcut>
                     </CommandItem>
                     <CommandItem
                       value="设置 settings"

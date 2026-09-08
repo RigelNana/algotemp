@@ -1,18 +1,14 @@
 import {
   useCallback,
-  useEffect,
+  useLayoutEffect,
   useRef,
-  useState,
   type CSSProperties,
   type ReactNode,
 } from "react";
-import { LayoutGroup } from "motion/react";
+import { LayoutGroup, useReducedMotion } from "motion/react";
 import { usePanelRef } from "react-resizable-panels";
-import {
-  SidebarProvider,
-  SidebarTrigger,
-  useSidebar,
-} from "@/components/ui/sidebar";
+import { useNavigate } from "@tanstack/react-router";
+import { SidebarProvider, useSidebar } from "@/components/ui/sidebar";
 import {
   ResizableHandle,
   ResizablePanel,
@@ -20,7 +16,7 @@ import {
 } from "@/components/ui/resizable";
 import { AppSidebar } from "@/components/navigation/app-sidebar";
 import { CommandMenuProvider } from "./command-menu";
-import { SettingsDialog } from "./settings-dialog";
+import { AppHeader } from "./app-header";
 import { usePreferences } from "@/stores/preferences";
 
 function Workspace({
@@ -36,16 +32,24 @@ function Workspace({
   const sidebarRef = usePanelRef();
   const groupElement = useRef<HTMLDivElement>(null);
   const width = useRef(sidebarWidth);
+  const previousOpen = useRef(open);
+  const reducedMotion = useReducedMotion();
   width.current = sidebarWidth;
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (isMobile) return;
-    // Apply the saved width after Panel has registered its expanded constraints.
+    if (previousOpen.current !== open) {
+      groupElement.current?.style.setProperty(
+        "--panel-duration",
+        reducedMotion ? "0ms" : "320ms",
+      );
+      previousOpen.current = open;
+    }
     const frame = requestAnimationFrame(() =>
       sidebarRef.current?.resize(open ? width.current : 56),
     );
     return () => cancelAnimationFrame(frame);
-  }, [open, isMobile, sidebarRef]);
+  }, [open, isMobile, sidebarRef, reducedMotion]);
 
   const content = (
     <main
@@ -53,11 +57,7 @@ function Workspace({
       tabIndex={-1}
       className="flex h-full min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-background outline-none"
     >
-      {isMobile && (
-        <div className="shrink-0 px-4 pt-3">
-          <SidebarTrigger aria-label="打开导航" />
-        </div>
-      )}
+      <AppHeader openSettings={openSettings} />
       <div className="min-h-0 flex-1 overflow-hidden">{children}</div>
     </main>
   );
@@ -88,7 +88,15 @@ function Workspace({
           ),
         );
       }}
-      className="min-h-0"
+      className="sidebar-panels min-h-0"
+      onPointerDownCapture={(event) => {
+        if ((event.target as HTMLElement).closest('[role="separator"]'))
+          groupElement.current?.style.setProperty("--panel-duration", "0ms");
+      }}
+      onKeyDownCapture={(event) => {
+        if ((event.target as HTMLElement).closest('[role="separator"]'))
+          groupElement.current?.style.setProperty("--panel-duration", "0ms");
+      }}
     >
       <ResizablePanel
         id="workspace-sidebar"
@@ -118,17 +126,16 @@ function Workspace({
 }
 
 export function AppShell({ children }: { children: ReactNode }) {
-  const [settingsOpen, setSettingsOpen] = useState(false);
-  const [settingsSection, setSettingsSection] = useState<
-    "preferences" | "shortcuts"
-  >("preferences");
+  const navigate = useNavigate();
   const sidebarWidth = usePreferences((state) => state.sidebarWidth);
   const openSettings = useCallback(
     (section: "preferences" | "shortcuts" = "preferences") => {
-      setSettingsSection(section);
-      setSettingsOpen(true);
+      void navigate({
+        to: "/settings",
+        hash: section === "shortcuts" ? "shortcuts" : "",
+      });
     },
-    [],
+    [navigate],
   );
 
   return (
@@ -150,11 +157,6 @@ export function AppShell({ children }: { children: ReactNode }) {
         </a>
         <CommandMenuProvider openSettings={openSettings}>
           <Workspace openSettings={openSettings}>{children}</Workspace>
-          <SettingsDialog
-            open={settingsOpen}
-            onOpenChange={setSettingsOpen}
-            section={settingsSection}
-          />
         </CommandMenuProvider>
       </SidebarProvider>
     </LayoutGroup>
